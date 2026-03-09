@@ -1,0 +1,348 @@
+{
+  "metadata": {
+    "description": "Gini shock experiments across 5 welfare regime types",
+    "n_agents_per_country": 1000,
+    "n_replications": 50,
+    "convergence_threshold": 0.001,
+    "max_timesteps": 500,
+    "social_influence_strength": 0.05,
+    "majority_threshold": 3.5,
+    "tipping_threshold": 0.5,
+    "shock_magnitudes_gini_points": [
+      0.0,
+      3.0,
+      5.0,
+      10.0,
+      15.0
+    ],
+    "representative_countries": {
+      "Social Democratic": "DK",
+      "Conservative/Corporatist": "DE",
+      "Liberal": "GB",
+      "Mediterranean": "ES",
+      "Post-Communist": "PL"
+    }
+  },
+  "results": {
+    "DK": {
+      "regime": "Social Democratic",
+      "gini_raw": 28.2,
+      "random_intercept": -0.5834476856883656,
+      "shocks": {
+        "0.0": {
+          "mean": 3.25464538083077,
+          "sd_across_reps": 0.009072835309819366,
+          "mean_within_sd": 0.2726913174490143,
+          "pct_above_threshold": 18.54,
+          "gini_raw": 28.2,
+          "gini_z": -0.849228181388728,
+          "n_steps_mean": 4.58,
+          "shift_from_baseline": 0.0,
+          "tipped": false
+        },
+        "3.0": {
+          "mean": 3.328111960421112,
+          "sd_across_reps": 0.008050192362742046,
+          "mean_within_sd": 0.2315452306472892,
+          "pct_above_threshold": 22.928,
+          "gini_raw": 31.2,
+          "gini_z": -0.008974793788996306,
+          "n_steps_mean": 6.12,
+          "shift_from_baseline": 0.07346657959034175,
+          "tipped": false
+        },
+        "5.0": {
+          "mean": 3.369381346304735,
+          "sd_across_reps": 0.006704369173097393,
+          "mean_within_sd": 0.21036506260917281,
+          "pct_above_threshold": 26.648000000000003,
+          "gini_raw": 33.2,
+          "gini_z": 0.5095688473530019,
+          "n_steps_mean": 5.22,
+          "shift_from_baseline": 0.11473596547396481,
+          "tipped": false
+        },
+        "10.0": {
+          "mean": 3.47427299337818,
+          "sd_across_reps": 0.005915116091606177,
+          "mean_within_sd": 0.1659493787113691,
+          "pct_above_threshold": 43.99799999999999,
+          "gini_raw": 38.2,
+          "gini_z": 1.8059279502079952,
+          "n_steps_mean": 6.9,
+          "shift_from_baseline": 0.21962761254741014,
+          "tipped": false
+        },
+        "15.0": {
+          "mean": 3.5793616876500436,
+          "sd_across_reps": 0.004076310547646494,
+          "mean_within_sd": 0.14694522726034928,
+          "pct_above_threshold": 70.6,
+          "gini_raw": 43.2,
+          "gini_z": 3.1022870530629887,
+          "n_steps_mean": 5.84,
+          "shift_from_baseline": 0.32471630681927355,
+          "tipped": false
+        }
+      },
+      "baseline_mean": 3.25464538083077,
+      "baseline_pct": 18.54
+    },
+    "DE": {
+      "regime": "Conservative/Corporatist",
+      "gini_raw": 31.9,
+      "random_intercept": -0.012361153635139448,
+      "shocks": {
+        "0.0": {
+          "mean": 3.9036766487229557,
+          "sd_across_reps": 0.007509239541331136,
+          "mean_within_sd": 0.2253389488485755,
+          "pct_above_threshold": 96.316,
+          "gini_raw": 31.9,
+          "gini_z": 0.0974245359727823,
+          "n_steps_mean": 4.68,
+          "shift_from_baseline": 0.0,
+          "tipped": false
+        },
+        "3.0": {
+          "mean": 3.976205604077514,
+          "sd_across_reps": 0.006065240735934837,
+          "mean_within_sd": 0.18968682281295712,
+          "pct_above_threshold": 99.42,
+          "gini_raw": 34.9,
+          "gini_z": 0.9503309423236985,
+          "n_steps_mean": 5.62,
+          "shift_from_baseline": 0.07252895535455828,
+          "tipped": false
+        },
+        "5.0": {
+          "mean": 4.018521942411108,
+          "sd_across_reps": 0.004903728425897359,
+          "mean_within_sd": 0.17211093280752696,
+          "pct_above_threshold": 99.866,
+          "gini_raw": 36.9,
+          "gini_z": 1.468874583465696,
+          "n_steps_mean": 6.02,
+          "shift_from_baseline": 0.11484529368815233,
+          "tipped": false
+        },
+        "10.0": {
+          "mean": 4.123086055329567,
+          "sd_across_reps": 0.003850069626158704,
+          "mean_within_sd": 0.14721510725136533,
+          "pct_above_threshold": 99.99600000000001,
+          "gini_raw": 41.9,
+          "gini_z": 2.7652336863206894,
+          "n_steps_mean": 6.48,
+          "shift_from_baseline": 0.21940940660661168,
+          "tipped": false
+        },
+        "15.0": {
+          "mean": 4.227300353123948,
+          "sd_across_reps": 0.004139514290102207,
+          "mean_within_sd": 0.1604498277732362,
+          "pct_above_threshold": 100.0,
+          "gini_raw": 46.9,
+          "gini_z": 4.061592789175682,
+          "n_steps_mean": 6.14,
+          "shift_from_baseline": 0.32362370440099264,
+          "tipped": false
+        }
+      },
+      "baseline_mean": 3.9036766487229557,
+      "baseline_pct": 96.316
+    },
+    "GB": {
+      "regime": "Liberal",
+      "gini_raw": 33.7,
+      "random_intercept": -0.19075637023576758,
+      "shocks": {
+        "0.0": {
+          "mean": 3.7616292561828697,
+          "sd_across_reps": 0.006627956881654138,
+          "mean_within_sd": 0.20952267163489768,
+          "pct_above_threshold": 89.49,
+          "gini_raw": 33.7,
+          "gini_z": 0.5579582903648697,
+          "n_steps_mean": 4.2,
+          "shift_from_baseline": 0.0,
+          "tipped": false
+        },
+        "3.0": {
+          "mean": 3.8356784535556456,
+          "sd_across_reps": 0.005600391217488026,
+          "mean_within_sd": 0.17645470391404453,
+          "pct_above_threshold": 97.11,
+          "gini_raw": 36.7,
+          "gini_z": 1.4170202193514974,
+          "n_steps_mean": 5.92,
+          "shift_from_baseline": 0.07404919737277593,
+          "tipped": false
+        },
+        "5.0": {
+          "mean": 3.8777554553538924,
+          "sd_across_reps": 0.005729564118719848,
+          "mean_within_sd": 0.16002626978047785,
+          "pct_above_threshold": 99.12599999999999,
+          "gini_raw": 38.7,
+          "gini_z": 1.9355638604934946,
+          "n_steps_mean": 5.64,
+          "shift_from_baseline": 0.11612619917102274,
+          "tipped": false
+        },
+        "10.0": {
+          "mean": 3.981756067351857,
+          "sd_across_reps": 0.004428543223801879,
+          "mean_within_sd": 0.14760565563678385,
+          "pct_above_threshold": 99.936,
+          "gini_raw": 43.7,
+          "gini_z": 3.231922963348488,
+          "n_steps_mean": 6.2,
+          "shift_from_baseline": 0.22012681116898714,
+          "tipped": false
+        },
+        "15.0": {
+          "mean": 4.086901025278036,
+          "sd_across_reps": 0.004973173273460038,
+          "mean_within_sd": 0.17639195831758148,
+          "pct_above_threshold": 99.954,
+          "gini_raw": 48.7,
+          "gini_z": 4.528282066203481,
+          "n_steps_mean": 6.44,
+          "shift_from_baseline": 0.3252717690951661,
+          "tipped": false
+        }
+      },
+      "baseline_mean": 3.7616292561828697,
+      "baseline_pct": 89.49
+    },
+    "ES": {
+      "regime": "Mediterranean",
+      "gini_raw": 34.7,
+      "random_intercept": -0.12885843174779382,
+      "shocks": {
+        "0.0": {
+          "mean": 3.8461639349407353,
+          "sd_across_reps": 0.005470312229983246,
+          "mean_within_sd": 0.20015505384307272,
+          "pct_above_threshold": 95.80400000000002,
+          "gini_raw": 34.7,
+          "gini_z": 0.8138103761382509,
+          "n_steps_mean": 3.9,
+          "shift_from_baseline": 0.0,
+          "tipped": false
+        },
+        "3.0": {
+          "mean": 3.9194458596194015,
+          "sd_across_reps": 0.0038097445275673994,
+          "mean_within_sd": 0.16864371973302056,
+          "pct_above_threshold": 99.264,
+          "gini_raw": 37.7,
+          "gini_z": 1.6762920399224959,
+          "n_steps_mean": 6.34,
+          "shift_from_baseline": 0.07328192467866623,
+          "tipped": false
+        },
+        "5.0": {
+          "mean": 3.961615553700462,
+          "sd_across_reps": 0.005116670609361114,
+          "mean_within_sd": 0.1548508652021837,
+          "pct_above_threshold": 99.86599999999999,
+          "gini_raw": 39.7,
+          "gini_z": 2.194835681064493,
+          "n_steps_mean": 5.0,
+          "shift_from_baseline": 0.11545161875972676,
+          "tipped": false
+        },
+        "10.0": {
+          "mean": 4.065004287275407,
+          "sd_across_reps": 0.004283207219204155,
+          "mean_within_sd": 0.1499863595603651,
+          "pct_above_threshold": 99.988,
+          "gini_raw": 44.7,
+          "gini_z": 3.491194783919487,
+          "n_steps_mean": 6.24,
+          "shift_from_baseline": 0.2188403523346718,
+          "tipped": false
+        },
+        "15.0": {
+          "mean": 4.170349712936557,
+          "sd_across_reps": 0.006917248795929638,
+          "mean_within_sd": 0.1860418598843696,
+          "pct_above_threshold": 99.978,
+          "gini_raw": 49.7,
+          "gini_z": 4.78755388677448,
+          "n_steps_mean": 5.88,
+          "shift_from_baseline": 0.3241857779958215,
+          "tipped": false
+        }
+      },
+      "baseline_mean": 3.8461639349407353,
+      "baseline_pct": 95.80400000000002
+    },
+    "PL": {
+      "regime": "Post-Communist",
+      "gini_raw": 30.2,
+      "random_intercept": -0.022428920379170058,
+      "shocks": {
+        "0.0": {
+          "mean": 3.858511170918331,
+          "sd_across_reps": 0.007328493539189843,
+          "mean_within_sd": 0.23991231868122362,
+          "pct_above_threshold": 93.296,
+          "gini_raw": 30.2,
+          "gini_z": -0.3375240098419655,
+          "n_steps_mean": 5.28,
+          "shift_from_baseline": 0.0,
+          "tipped": false
+        },
+        "3.0": {
+          "mean": 3.930797400281065,
+          "sd_across_reps": 0.006280473063891048,
+          "mean_within_sd": 0.20531989801158748,
+          "pct_above_threshold": 98.264,
+          "gini_raw": 33.2,
+          "gini_z": 0.5095688473530019,
+          "n_steps_mean": 6.3,
+          "shift_from_baseline": 0.07228622936273377,
+          "tipped": false
+        },
+        "5.0": {
+          "mean": 3.973090168105929,
+          "sd_across_reps": 0.005200807413320623,
+          "mean_within_sd": 0.18362989626657528,
+          "pct_above_threshold": 99.47,
+          "gini_raw": 35.2,
+          "gini_z": 1.0281124884949993,
+          "n_steps_mean": 7.94,
+          "shift_from_baseline": 0.11457899718759812,
+          "tipped": false
+        },
+        "10.0": {
+          "mean": 4.07794338747723,
+          "sd_across_reps": 0.0047576342118107965,
+          "mean_within_sd": 0.15038826004014705,
+          "pct_above_threshold": 99.98599999999999,
+          "gini_raw": 40.2,
+          "gini_z": 2.3244715913499925,
+          "n_steps_mean": 7.42,
+          "shift_from_baseline": 0.2194322165588991,
+          "tipped": false
+        },
+        "15.0": {
+          "mean": 4.181339673302201,
+          "sd_across_reps": 0.0040061481124634936,
+          "mean_within_sd": 0.1521597810923988,
+          "pct_above_threshold": 100.0,
+          "gini_raw": 45.2,
+          "gini_z": 3.6208306942049857,
+          "n_steps_mean": 8.54,
+          "shift_from_baseline": 0.32282850238386995,
+          "tipped": false
+        }
+      },
+      "baseline_mean": 3.858511170918331,
+      "baseline_pct": 93.296
+    }
+  }
+}

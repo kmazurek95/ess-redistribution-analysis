@@ -1,0 +1,103 @@
+# Python cache files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Jupyter Notebook
+.ipynb_checkpoints
+*/.ipynb_checkpoints/*
+
+# IPython
+profile_default/
+ipython_config.py
+
+# Virtual environments
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# VS Code
+.vscode/
+*.code-workspace
+.history/
+
+# PyCharm
+.idea/
+
+# Environments
+.env
+.venv
+
+# Large data files - keep structure but not content
+data/raw/*.dta
+data/raw/*.sav
+data/raw/*.csv
+data/raw/*.xlsx
+data/raw/*.zip
+data/processed/*.parquet
+data/processed/*.csv
+data/processed/*.pkl
+
+# But allow example/template files
+!data/external/DATA_SOURCES.md
+
+# OS-specific files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# R files (for pymer4)
+.Rhistory
+.RData
+.Rproj.user
+
+# Model outputs (large files)
+outputs/models/*.pkl
+outputs/models/*.joblib
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+*.tmp
+*.bak
+*.swp
+*~
+
+# pytest
+.pytest_cache/
+.coverage
+htmlcov/
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json

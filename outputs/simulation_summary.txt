@@ -1,0 +1,30 @@
+
+============================================================
+  SIMULATION RESULTS SUMMARY
+============================================================
+
+Baseline equilibrium attitudes (mean across 50 replications):
+  DK (Social Democratic): 3.255 (Gini = 28.2)
+  DE (Conservative/Corporatist): 3.904 (Gini = 31.9)
+  GB (Liberal): 3.762 (Gini = 33.7)
+  ES (Mediterranean): 3.846 (Gini = 34.7)
+  PL (Post-Communist): 3.859 (Gini = 30.2)
+
+Tipping results (shift > 0.5 from baseline):
+  3pp shock: none
+  5pp shock: none
+  10pp shock: none
+  15pp shock: none
+
+Detailed shifts by shock magnitude:
+  Country Regime                            3pp       5pp      10pp      15pp
+  ---------------------------------------------------------------------------
+  DK     Social Democratic             +0.073   +0.115   +0.220   +0.325
+  DE     Conservative/Corporatist      +0.073   +0.115   +0.219   +0.324
+  GB     Liberal                       +0.074   +0.116   +0.220   +0.325
+  ES     Mediterranean                 +0.073   +0.115   +0.219   +0.324
+  PL     Post-Communist                +0.072   +0.115   +0.219   +0.323
+
+Key finding: GB (Liberal) shows the largest response to inequality shocks (+0.325 at 15pp), while PL (Post-Communist) shows the smallest (+0.323).
+
+Effect size note: The income x Gini interaction (beta = 0.012) produces gradual drift (max shift = 0.325) rather than discontinuous tipping across the tested shock range. This is consistent with the modest coefficient magnitude.
