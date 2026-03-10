@@ -1,539 +1,125 @@
-# Methodology Guide
+# Methodology
 
-Explanation of the multilevel modeling approach, variable transformations, and typology construction methods used in this analysis.
-
----
-
-## Table of Contents
-
-1. [Multilevel Modeling Rationale](#multilevel-modeling-rationale)
-2. [Variable Centering and Standardization](#variable-centering-and-standardization)
-3. [Model Building Sequence](#model-building-sequence)
-4. [Random Effects Interpretation](#random-effects-interpretation)
-5. [Cross-Level Interactions](#cross-level-interactions)
-6. [Welfare Regime Classification](#welfare-regime-classification)
-7. [Institutional Indicators](#institutional-indicators)
-8. [AI/Automation Exposure Measurement](#ai-automation-exposure-measurement)
-9. [Typology Construction](#typology-construction)
-10. [Key References](#key-references)
+Technical details of the multilevel modeling approach, variable transformations, and simulation design.
 
 ---
 
-## Multilevel Modeling Rationale
+## Multilevel Model Specification
 
-### Why Multilevel Models?
-
-Individuals (Level 1) are **nested within countries** (Level 2), violating the independence assumption of standard OLS regression. Multilevel models (also called hierarchical linear models or mixed-effects models) account for this clustering by:
-
-1. **Allowing intercepts to vary by country**  - Countries have different baseline levels of redistribution support
-2. **Allowing slopes to vary by country**  - The effect of income on redistribution support may differ across countries
-3. **Modeling both levels simultaneously**  - Individual characteristics AND country context shape attitudes
-
-### Key Advantages
-
-- **Correct standard errors**  - OLS underestimates SEs when ignoring clustering
-- **Partition variance**  - Decompose variance into within-country and between-country components
-- **Test cross-level interactions**  - Does country-level inequality moderate individual-level income effects?
-- **Use all data efficiently**  - Unlike country fixed effects, multilevel models estimate country-level effects
-
-### Mathematical Specification
-
-**Level 1 (individual i in country j):**
-```
-Y_ij = β₀j + β₁j(Income_ij) + β₂j(PoliticalTrust_ij) + ... + ε_ij
-```
-
-**Level 2 (country j):**
-```
-β₀j = γ₀₀ + γ₀₁(Gini_j) + γ₀₂(GDP_j) + u₀j  (random intercept)
-β₁j = γ₁₀ + γ₁₁(Gini_j) + u₁j               (random slope for income)
-```
-
-**Combined form:**
-```
-Y_ij = γ₀₀ + γ₁₀(Income_ij) + γ₀₁(Gini_j) + γ₁₁(Income_ij × Gini_j) + u₀j + u₁j(Income_ij) + ε_ij
-```
-
-Where:
-- **γ** = Fixed effects (population-average parameters)
-- **u** = Random effects (country-specific deviations)
-- **ε** = Individual-level residuals
-
----
-
-## Variable Centering and Standardization
-
-### Level-1 Variables: Grand-Mean Centering
-
-**What:** Subtract the overall sample mean from each individual's score
-
-**Formula:** `X_centered = X - mean(X)`
-
-**Why:**
-1. **Interpretability**  - Intercept represents outcome for someone at the average of all predictors
-2. **Reduces multicollinearity**  - Especially important for interaction terms
-3. **Enables comparison**  - Centered coefficients are comparable across models
-
-**Applied to:** Income, political trust, age, education, meritocracy index
-
-**Example:**
-```python
-# Original income ranges from 1-10 (deciles)
-# Mean income = 5.5
-# Centered: income_c ranges from -4.5 to +4.5
-# Interpretation: One decile above the mean
-```
-
-### Level-2 Variables: Z-Score Standardization
-
-**What:** Transform to mean=0, SD=1
-
-**Formula:** `X_z = (X - mean(X)) / SD(X)`
-
-**Why:**
-1. **Comparability**  - Coefficients represent effect of 1 SD change (standardized effect size)
-2. **Different scales**  - Gini (0-100), GDP ($20k-$70k), ALMP (0-2% GDP) → all on same scale
-3. **Interpretability**  - Easy to compare relative importance of country-level predictors
-
-**Applied to:** Gini, GDP, unemployment, EPL, ALMP, union density, social spending, AI exposure
-
-**Example:**
-```python
-# Original Gini: mean=31.5, SD=4.2
-# Gini_z = 0 means a country at average inequality
-# Gini_z = +1 means a country 1 SD above average (higher inequality)
-# Coefficient: "Effect of moving from average to high-inequality country"
-```
-
-### Why Not Standardize Level-1?
-
-- Level-1 variables have meaningful scales (income deciles, age in years)
-- Standardization would obscure substantive interpretation
-- Grand-mean centering is sufficient for dealing with multicollinearity
-
----
-
-## Model Building Sequence
-
-### The 7-Model Replication Sequence
-
-**Model 1: Null Model**
-- Formula: `Y ~ 1 + (1|country)`
-- Purpose: Calculate ICC (how much variance is between countries?)
-- No predictors  - just partition variance
-
-**Model 2: Add Income (Level-1)**
-- Formula: `Y ~ income_c + (1|country)`
-- Purpose: Test self-interest hypothesis
-- Expected: Negative coefficient (higher income → less support)
-
-**Model 3: Add Political Trust (Level-1)**
-- Formula: `Y ~ income_c + trust_c + (1|country)`
-- Purpose: Test legitimacy hypothesis
-- Expected: Positive coefficient (higher trust → more support)
-
-**Model 4: Add All Level-1 Controls**
-- Formula: `Y ~ income_c + trust_c + age_c + female + education_c + meritocracy_c + (1|country)`
-- Purpose: Control for confounders
-- Ensures income/trust effects aren't spurious
-
-**Model 5: Add Level-2 Variables**
-- Formula: `Y ~ ... + gini_z + gdp_z + unemployment_z + trust_l2 + (1|country)`
-- Purpose: Test country-level effects
-- Expected: Gini positive (higher inequality → more support)
-
-**Model 6: Random Slopes**
-- Formula: `Y ~ ... + (income_c + trust_c|country)`
-- Purpose: Allow effects to vary by country
-- Tests whether income/trust slopes differ across contexts
-
-**Model 7: Cross-Level Interactions**
-- Formula: `Y ~ ... + income_c:gini_z + trust_c:gdp_z + (income_c + trust_c|country)`
-- Purpose: Test whether country context moderates individual effects
-- **Key hypothesis:** Income × Gini interaction
-
-### Interpreting the Income × Gini Interaction
-
-**Main question:** Does inequality moderate the self-interest effect?
-
-**Hypothesis:** In high-inequality countries, the rich support redistribution more (or oppose it less) because inequality is salient
-
-**Interpretation if γ₁₁ > 0:**
-- At low Gini (egalitarian countries): Income has a strong negative effect
-- At high Gini (unequal countries): Income effect is weaker (less negative)
-- **Mechanism:** Inequality makes redistribution a more broadly shared concern
-
----
-
-## Random Effects Interpretation
-
-### Intraclass Correlation (ICC)
-
-**Formula:** `ICC = σ²_between / (σ²_between + σ²_within)`
-
-**Interpretation:**
-- ICC = 0.15 → 15% of variance is between countries, 85% within countries
-- Justifies multilevel approach (if ICC ≈ 0, could use OLS with robust SEs)
-
-**Typical values:**
-- Attitudes: ICC = 0.05-0.20 (modest clustering)
-- Behaviors: ICC = 0.01-0.10 (weaker clustering)
-- Policy outcomes: ICC = 0.30-0.50 (strong clustering)
-
-### Random Intercepts
-
-**What:** Country-specific deviations from the overall intercept
-
-**Interpretation:**
-- u₀j = +0.5 → Country j has 0.5 points higher baseline support (after controlling for X)
-- u₀j = -0.3 → Country j has 0.3 points lower baseline support
-
-**Visualization:** Caterpillar plots showing country rankings
-
-### Random Slopes
-
-**What:** Country-specific deviations from the overall slope
-
-**Interpretation:**
-- u₁j = -0.2 → In country j, income effect is 0.2 stronger (more negative) than average
-- u₁j = +0.1 → In country j, income effect is 0.1 weaker (less negative) than average
-
-**Implication:** The relationship between income and redistribution support is **context-dependent**
-
----
-
-## Cross-Level Interactions
-
-### Conceptual Meaning
-
-Cross-level interactions test whether **Level-2 variables moderate Level-1 relationships**
-
-**Example:** Does country-level inequality (L2) moderate the effect of individual income (L1)?
-
-### Interpretation Strategy
-
-1. **Plot the interaction**  - Show income slopes at low/medium/high Gini
-2. **Simple slopes analysis**  - Test income effect at specific Gini values
-3. **Regions of significance**  - At what Gini values is income effect significant?
-
-### Income × Gini Example
-
-**If γ₁₁ = +0.08 (p < 0.01):**
+Individuals (Level 1) are nested within countries (Level 2). The combined model:
 
 ```
-Predicted support = ... + (-0.15)(Income_c) + (0.20)(Gini_z) + (0.08)(Income_c × Gini_z)
+Y_ij = gamma_00 + gamma_10(X_ij) + gamma_01(Z_j) + gamma_11(X_ij * Z_j) + u_0j + u_1j(X_ij) + e_ij
 ```
 
-**At low inequality (Gini_z = -1):**
-```
-Effect of income = -0.15 + (0.08)(-1) = -0.23  (strong negative effect)
-```
+Where gamma = fixed effects, u = random effects (country deviations), e = individual residuals. All models estimated via REML using statsmodels MixedLM with robust standard errors.
 
-**At high inequality (Gini_z = +1):**
-```
-Effect of income = -0.15 + (0.08)(+1) = -0.07  (weak negative effect)
-```
+## Variable Transformations
 
-**Substantive interpretation:** Self-interest matters more in egalitarian contexts; in unequal contexts, even the rich support redistribution
+**Level-1 (grand-mean centering):** Subtract the sample mean from each individual score. Applied to income, education, age, ideology, political trust, meritocracy index. Intercepts then represent the outcome at the mean of all predictors.
 
----
+**Level-2 (z-score standardization):** Transform to mean=0, SD=1. Applied to Gini, GDP, unemployment, corruption CPI, EPL, ALMP, union density, social spending, AI exposure. Coefficients represent the effect of a 1 SD change, enabling direct comparison of country-level predictor importance.
+
+## Redistribution Model Sequence (M1-M7)
+
+**DV:** gincdif (reversed, 1-5 scale). N = 31,393 in 26 countries.
+
+| Model | Specification | Key result |
+|-------|-------------|------------|
+| M1 | Null: `redist ~ 1 + (1\|country)` | ICC = 8.0% |
+| M2 | + income_c | coef = -0.039, p < 0.001 |
+| M3 | + all L1 predictors | ideology strongest (coef = -0.079) |
+| M4 | + L2 economic variables | Gini, GDP, unemployment all ns |
+| M5 | + random slope for income | slope variance = 0.0003 |
+| M6 | Income x Gini interaction | **coef = 0.012, p = 0.002** |
+| M7 | + ideology random slope, ideology x Gini | coef = 0.028, p = 0.024 |
+
+L1 predictors: income_c, ideology_c, political_trust_c, education_c, age_c, female, employed, meritocracy_index_c. L2 predictors: gini_z, gdp_per_capita_z, unemployment_rate_z.
+
+## AI Exposure Models (M14-M16)
+
+| Model | Variable | Coef | p |
+|-------|----------|------|---|
+| M14 | AI exposure (main effect) | -0.014 | 0.857 |
+| M15 | AI x regime interactions | all | > 0.19 |
+| M16 | Social exposure composite | -0.013 | 0.857 |
+
+AI exposure measure: Felten, Raj & Seamans (2021) AIOE scores aggregated to country level using Eurostat LFS 2018 employment weights. No direct effect on redistribution preferences in any specification. N = 30,656 in 25 countries.
+
+## Trust Model Sequence (T1-T7)
+
+**DV:** trstprl (0-10 scale). N = 31,033 in 25 countries.
+
+| Model | Specification | Key result |
+|-------|-------------|------------|
+| T1 | Null | ICC = 18.1% |
+| T2 | + L1 predictors | education: 0.057, p < 0.001 |
+| T3 | + L2 predictors (incl. corruption) | **corruption: 0.928, p < 0.001** |
+| T4 | + random slope for education | slope variance = 0.0043 |
+| T5 | Education x corruption interaction | **coef = 0.050, p < 0.001** |
+| T6 | Education x Gini interaction | coef = -0.026, p = 0.045 |
+| T7 | Full model (both interactions) | ed x Gini drops to p = 0.87 |
+
+L1 predictors: income_c, education_c, ideology_c, age_c, female, employed, meritocracy_index_c. L2 predictors: gini_z, gdp_per_capita_z, unemployment_rate_z, corruption_z.
+
+**Corruption measurement:** Transparency International Corruption Perceptions Index 2018, z-score standardized. Higher CPI = less corrupt. The corruption_z coefficient (0.928) means a 1 SD increase in governance quality raises trust by nearly a full point on the 0-10 scale.
 
 ## Welfare Regime Classification
 
-### Esping-Andersen Typology (Extended)
+Esping-Andersen extended typology with 5 regime types:
 
-**Original "Three Worlds" + Extensions:**
+- **Social Democratic:** DK, FI, NO, SE
+- **Conservative/Corporatist:** DE, FR, BE, AT, NL, CH
+- **Liberal:** GB, IE
+- **Mediterranean:** ES, IT, PT, CY
+- **Post-Communist:** CZ, EE, HR, HU, LT, LV, PL, SI, BG, RS, ME
 
-1. **Social Democratic** (DK, SE, NO, FI)
-   - Universal benefits, high decommodification
-   - Generous ALMP, strong unions
-   - Egalitarian values
-
-2. **Conservative/Corporatist** (DE, FR, BE, AT, NL, CH)
-   - Occupational welfare, status preservation
-   - Social insurance model
-   - Moderate redistribution
-
-3. **Liberal** (GB, IE)
-   - Means-tested benefits, market reliance
-   - Weak unions, low ALMP
-   - Residual welfare state
-
-4. **Mediterranean** (ES, IT, PT, CY)
-   - Family-based welfare, fragmented coverage
-   - Labor market dualism (insiders/outsiders)
-   - Recent welfare expansion
-
-5. **Post-Communist** (CZ, EE, HR, HU, LT, LV, PL, SI, BG, RS, ME)
-   - Transition from socialist to market systems
-   - Weak institutions, low trust
-   - High inequality, limited ALMP
-
-**Theoretical basis:** Esping-Andersen (1990), *The Three Worlds of Welfare Capitalism*
-
-### Varieties of Capitalism (Hall & Soskice)
-
-**Alternative classification focusing on labor market coordination:**
-
-1. **Liberal Market Economies (LME):** GB, IE
-   - Flexible labor markets, weak employment protection
-   - Firm-level wage bargaining
-   - Market-based coordination
-
-2. **Coordinated Market Economies (CME):** DE, AT, BE, NL, CH, DK, SE, NO, FI
-   - Strong employment protection, coordinated wage-setting
-   - Industry/sector-level bargaining
-   - Non-market coordination (institutions, networks)
-
-3. **Mediterranean Market Economies (MME):** ES, IT, PT, FR, CY
-   - State-led coordination, rigid labor markets
-   - High EPL, low ALMP
-   - Mixed coordination modes
-
-4. **Dependent Market Economies (DME):** CZ, EE, HR, HU, LT, LV, PL, SI, BG, RS, ME
-   - Foreign direct investment-dependent
-   - Low coordination capacity
-   - Hierarchical coordination
-
-**Theoretical basis:** Hall & Soskice (2001), *Varieties of Capitalism*
-
-### Regime vs. Continuous Indicators
-
-**Tradeoff:**
-- **Regime dummies:** Capture full institutional packages, easier interpretation
-- **Continuous indicators:** More precise, show within-regime variation, avoid arbitrary cutoffs
-
-**Our approach:** Use both
-1. Test regime effects (Models 8-10)
-2. Test continuous institutional indicators (Models 11-13)
-3. Compare model fit and variance explained
-
----
-
-## Institutional Indicators
-
-### Employment Protection Legislation (EPL)
-
-**What it measures:** Legal restrictions on firing workers
-
-**Source:** OECD Employment Protection Database
-
-**Variable:** EPRC_V4 (EPL for regular contracts, version 4)
-
-**Scale:** 0-6 (higher = stricter protection)
-
-**Theoretical relevance:**
-- **Insider/outsider theory:** EPL protects insiders, creates labor market dualism
-- **Redistribution preferences:** Strong EPL may reduce demand for redistribution (job security substitutes for benefits)
-
-**Our hypothesis:** EPL moderates income effect (strong EPL buffers self-interest)
-
-### Active Labor Market Policy (ALMP) Spending
-
-**What it measures:** Public spending on job training, placement services, employment subsidies
-
-**Source:** OECD SOCX (Social Expenditure Database)
-
-**Variable:** Active labor market programmes as % GDP
-
-**Scale:** 0-2% (typically 0.1-1.5%)
-
-**Theoretical relevance:**
-- **Investment vs. compensation:** ALMP prepares workers for new jobs (investment) vs. unemployment benefits (compensation)
-- **Skill development:** Strong ALMP increases perceived opportunity for upward mobility
-- **Redistribution preferences:** ALMP may reduce demand for passive transfers
-
-**Our hypothesis:** ALMP moderates income effect (strong ALMP maintains solidarity even among winners)
-
-### Union Density
-
-**What it measures:** Percentage of employees who are union members
-
-**Source:** ICTWSS Database (Institutional Characteristics of Trade Unions, Wage Setting, State Intervention and Social Pacts)
-
-**Variable:** UD (Union Density)
-
-**Scale:** 0-100% (typically 5-80%)
-
-**Theoretical relevance:**
-- **Power resources theory:** Union strength shapes welfare state generosity
-- **Solidarity:** High union density promotes collective interests over individual self-interest
-- **Redistribution preferences:** Strong unions mobilize support for redistribution
-
-### Social Spending
-
-**What it measures:** Total public social expenditure as % GDP
-
-**Source:** OECD SOCX
-
-**Variable:** Total social expenditure (% GDP)
-
-**Scale:** 0-35% (typically 15-30%)
-
-**Theoretical relevance:**
-- **Welfare state size:** Reflects generosity and scope of social protection
-- **Self-reinforcing support:** Large welfare states create constituencies that defend them ("welfare state feedback")
-- **Redistribution preferences:** High spending may indicate already-satisfied demand
-
----
+Used descriptively in the redistribution analysis (Notebook 04) and as country groupings in the simulation.
 
 ## AI/Automation Exposure Measurement
 
-### Felten, Raj & Seamans (2021) AIOE
+Felten, Raj & Seamans (2021) AIOE: occupation-level AI task overlap scores (774 SOC 6-digit occupations), averaged to SOC 2-digit groups, mapped to ISCO-08 1-digit via BLS/ILO crosswalk, weighted by Eurostat LFS 2018 employment shares. Measures cognitive/professional AI exposure, not manufacturing automation. Service economies (GB, CH, NO) score highest; post-communist manufacturing economies (RS, HU, BG) score lowest.
 
-**Construction:** Country-level aggregation of AI Occupational Exposure scores:
-1. Occupation-level AIOE at SOC 6-digit level (774 occupations)
-2. Averaged to SOC 2-digit major groups
-3. Mapped to ISCO-08 1-digit groups via BLS/ILO crosswalk
-4. Employment-weighted country averages using Eurostat LFS 2018
+**Social exposure composite:** Technical AI exposure x institutional weakness (inverse of EPL + ALMP + social spending). Also null (p = 0.857).
 
-**Interpretation:** Higher values = more occupational task overlap with AI capabilities. Measures cognitive/professional exposure, not manufacturing automation.
+**Indirect channel:** The null direct effect combined with the significant income x Gini interaction identifies an indirect pathway: AI labor displacement shifts income distributions, increasing Gini, which activates the cross-level interaction. Supported by Minniti, Prettner & Venturini (2025), who find AI innovation reduces labor share by 0.5-1.6% per doubling of regional AI patent intensity in European regions.
 
-**Country rankings:** Service economies (GB, CH, NO, SE) score highest; post-communist manufacturing economies (RS, HU, BG) score lowest.
+## Simulation Design
 
-**Empirical result:** No significant direct effect on redistribution preferences (coef = -0.014, p = 0.857). All model specifications (main effect, regime interactions, social exposure composite) yield null results.
+### Redistribution Simulation
 
-**Reproduction:** See `scripts/aggregate_aioe.py`
+- 5 representative countries (DK, DE, GB, ES, PL) spanning all welfare regime types
+- 1,000 agents per country with income, ideology, attitudes from ESS-calibrated distributions
+- Update rule: empirical fixed effects + country random intercepts + income x Gini interaction + Granovetter-style social influence
+- Shocks: Gini increases of 3, 5, 10, 15 percentage points
+- 50 replications per condition
+- Result: gradual linear drift (~0.022 pts/Gini pp), no discontinuous tipping
 
-### Frey & Osborne Automation Probability
+### Trust Simulation
 
-**Construction:**
-1. Occupation-level automation probabilities (702 US occupations)
-2. Weighted by country employment shares
+- Same 5 countries, 1,000 agents, 50 replications
+- Update rule: empirical fixed effects + education x corruption interaction + social influence
+- Shocks: CPI decreases of 5, 10, 15, 20 points
+- **Feedback loop:** When aggregate trust falls below predicted level, corruption_z decreases by 0.02 * trust deficit per timestep, modeling governance degradation from citizen disengagement
+- Result: tipping at -15 CPI in all countries, feedback amplifies direct effect by ~40%
 
-**Formula:**
-```
-Country automation risk = Σ(p_occupation × employment_share_occupation)
-```
+### Why Trust Tips and Redistribution Does Not
 
-**Status:** Not yet computed for this project. The `automation_risk` column contains placeholder NaN values.
+Two structural differences explain the divergence:
 
-**Limitations:**
-- Based on US occupations (may not transfer perfectly)
-- Automation probability ≠ actual job loss (complementary technologies, task reorganization)
+1. **Effect size:** The education x corruption interaction (0.050) is 4x larger than income x Gini (0.012). Corruption shocks propagate more strongly through the attitude equation.
 
-### Social Exposure Composite (Our Contribution)
-
-**Concept:** Technical AI exposure × Institutional weakness
-
-**Rationale:** Countries with high technical exposure BUT weak institutions are most **socially vulnerable**
-
-**Construction:**
-```python
-# Standardize components
-tech_exposure_z = standardize(ai_exposure_oecd)
-institutional_weakness_z = -standardize(epl + almp + social_spending)
-
-# Composite
-social_exposure = tech_exposure_z × institutional_weakness_z
-```
-
-**Interpretation:**
-- **High social exposure:** High AI risk + weak institutions (e.g., Poland)
-- **Low social exposure:** Low AI risk + strong institutions (e.g., Norway)
-- **Moderate (buffered):** High AI risk + strong institutions (e.g., Denmark)
-
-**Policy relevance:** Identifies countries needing institutional strengthening to manage AI transition
-
-### Theoretical Pivot: The Indirect Channel
-
-The null direct effect of AI exposure on redistribution preferences (p = 0.857) led to a redesign of the simulation component. Rather than modeling AI exposure as a direct attitudinal driver, the simulation treats AI-driven labor displacement as an exogenous source of inequality shocks. The causal chain is: AI labor displacement shifts income distributions and compresses middle-income ranges, increasing the Gini coefficient, which then activates the significant income x Gini cross-level interaction (coef = 0.012, p = 0.002). This indirect channel is supported by recent empirical work showing AI innovation reduces labor share by 0.5-1.6% per doubling of regional AI patent intensity in European regions (Minniti, Prettner & Venturini, 2025, European Economic Review), and by evidence that automation risk effects on redistribution preferences are moderated by welfare state generosity (Busemeyer & Sahm, 2021; Sacchi et al., 2020).
-
-This framing is more empirically grounded than the direct channel: the simulation only uses parameters with statistical support, and the AI narrative provides the substantive motivation for the inequality shocks rather than entering the model equations directly.
-
----
-
-## Typology Construction
-
-### From Continuous Indicators to Country Types
-
-**Goal:** Reduce complexity, identify ideal-type cases for qualitative study
-
-**Approach:** Combine quantitative clustering with theoretical interpretation
-
-### Step 1: Select Dimensions
-
-**For institutional mediation typology:**
-1. EPL strictness (labor market protection)
-2. ALMP spending (investment in skills)
-3. Union density (collective organization)
-
-**For social exposure typology:**
-1. Technical AI exposure (OECD index or Frey & Osborne)
-2. Institutional strength (composite of EPL, ALMP, social spending)
-
-### Step 2: Cluster Analysis
-
-**Method:** K-means clustering or hierarchical clustering
-
-**Considerations:**
-- **Number of clusters:** Determined by dendrogram or elbow plot (typically 3-5)
-- **Standardization:** Essential (variables on different scales)
-- **Validation:** Silhouette scores, theoretical coherence
-
-### Step 3: Theoretical Interpretation
-
-**Map clusters to theoretical frameworks:**
-- Do clusters align with Esping-Andersen regimes?
-- Do they reveal new patterns (e.g., high-AI/low-institution cluster)?
-
-**Label clusters descriptively:**
-- "Institutional buffers" (high ALMP, high EPL)
-- "Market-oriented" (low ALMP, low EPL)
-- "Transition" (moderate indicators, high variation)
-
-### Step 4: Case Selection
-
-**For qualitative follow-up:**
-1. **Prototypical cases:** Countries at cluster centers
-2. **Deviant cases:** Countries that don't fit expected patterns
-3. **Comparison pairs:** Similar on some dimensions, different on others
-
-**Example:**
-- **Denmark** (high AI exposure, strong institutions) vs. **Poland** (high AI exposure, weak institutions)
-- **Research question:** How do institutions mediate political responses to automation risk?
-
----
+2. **Feedback loop:** Trust erosion degrades governance quality, which further erodes trust. Redistribution preferences have no analogous self-reinforcing mechanism -- wanting more redistribution does not cause less redistribution.
 
 ## Key References
 
-### Multilevel Modeling
-
-- Raudenbush, S. W., & Bryk, A. S. (2002). *Hierarchical Linear Models*. Sage.
-- Snijders, T. A. B., & Bosker, R. J. (2012). *Multilevel Analysis*. Sage.
-- Gelman, A., & Hill, J. (2006). *Data Analysis Using Regression and Multilevel/Hierarchical Models*. Cambridge University Press.
-
-### Welfare State Theory
-
-- Esping-Andersen, G. (1990). *The Three Worlds of Welfare Capitalism*. Princeton University Press.
-- Hall, P. A., & Soskice, D. (2001). *Varieties of Capitalism*. Oxford University Press.
-- Korpi, W., & Palme, J. (1998). The paradox of redistribution and strategies of equality. *American Sociological Review*, 63(5), 661-687.
-
-### Redistribution Preferences
-
-- Meltzer, A. H., & Richard, S. F. (1981). A rational theory of the size of government. *Journal of Political Economy*, 89(5), 914-927.
-- Iversen, T., & Soskice, D. (2001). An asset theory of social policy preferences. *American Political Science Review*, 95(4), 875-893.
-- Rehm, P. (2016). *Risk Inequality and Welfare States*. Cambridge University Press.
-
-### Institutional Political Economy
-
-- Pierson, P. (2001). *The New Politics of the Welfare State*. Oxford University Press.
-- Thelen, K. (2014). *Varieties of Liberalization and the New Politics of Social Solidarity*. Cambridge University Press.
-- Hemerijck, A. (2013). *Changing Welfare States*. Oxford University Press.
-
-### AI and Labor Markets
-
-- Frey, C. B., & Osborne, M. A. (2017). The future of employment: How susceptible are jobs to computerisation? *Technological Forecasting and Social Change*, 114, 254-280.
-- Acemoglu, D., & Restrepo, P. (2020). Robots and jobs: Evidence from US labor markets. *Journal of Political Economy*, 128(6), 2188-2244.
-- Felten, E., Raj, M., & Seamans, R. (2021). Occupational, industry, and geographic exposure to artificial intelligence. *Strategic Management Journal*, 42(12), 2195-2217.
-
-### Welfare State Adaptation
-
-- Esping-Andersen, G., et al. (2002). *Why We Need a New Welfare State*. Oxford University Press.
-- Hacker, J. S. (2006). *The Great Risk Shift*. Oxford University Press.
-- Beramendi, P., et al. (2015). *The Politics of Advanced Capitalism*. Cambridge University Press.
+- Raudenbush & Bryk (2002), Snijders & Bosker (2012) -- multilevel methods
+- Esping-Andersen (1990), Hall & Soskice (2001) -- welfare regimes
+- Meltzer & Richard (1981), Rehm (2016) -- redistribution preferences
+- Felten, Raj & Seamans (2021), Frey & Osborne (2017) -- AI exposure measurement
+- Van der Meer & Hakhverdian (2017), Noordzij et al. (2021) -- education x corruption interaction
+- Minniti, Prettner & Venturini (2025) -- AI and labor share
 
 ---
 
-**Last Updated:** February 2026
-**For:** ESS Redistribution Analysis  - REPAIR PhD Application
+**Last Updated:** March 2026

@@ -434,7 +434,7 @@ All Level-2 continuous variables are **z-score standardized**:
 
 ---
 
-**Last Updated:** February 2026
-**Version:** 1.0
-**Project:** ESS Redistribution Analysis for REPAIR PhD Application
+**Last Updated:** March 2026
+**Version:** 1.1
+**Project:** ESS Redistribution and Trust Analysis
 **Contact:** Kaleb Mazurek

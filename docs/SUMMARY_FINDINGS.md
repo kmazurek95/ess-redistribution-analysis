@@ -1,5 +1,11 @@
 # Summary of Findings
 
+## Overview
+
+This project asks whether AI-driven economic restructuring threatens democratic stability through shifting redistribution preferences or eroding institutional trust. The answer is that these two attitudinal domains have fundamentally different vulnerability structures. Redistribution preferences respond gradually to inequality shocks, with no tipping dynamics under plausible conditions. Institutional trust, by contrast, tips sharply under governance quality shocks, amplified by a self-reinforcing feedback loop between trust erosion and governance degradation. The domain most critical for democratic function is structurally the most vulnerable.
+
+---
+
 ## Core Replication (Notebook 03)
 
 **Sample:** 31,393 individuals across 26 European countries (ESS Round 9, 2018)
