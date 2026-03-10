@@ -2,8 +2,11 @@
 Fetch basic economic indicators (Gini, GDP, unemployment) for ESS Round 9
 countries from the OECD and World Bank APIs.
 
+Historical script. Data was collected manually; see docs/DATA_SOURCES.md for provenance.
+
 Note: OECD Gini data was ultimately downloaded manually and lives in
 data/external/. The API functions here served as exploratory scaffolding.
+The World Bank fetch functions remain functional.
 """
 
 import sys

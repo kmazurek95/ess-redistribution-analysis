@@ -71,7 +71,6 @@ def load_country_data(gini_path=None, gdp_path=None, unemployment_path=None):
         if "year" in gini_df.columns:
             gini_df = gini_df[gini_df["year"] == 2018]
         country_df = gini_df[["country", "gini"]]
-        logger.info(f"Loaded Gini data for {len(country_df)} countries")
     else:
         logger.warning(f"Gini data file not found: {gini_path}")
 
@@ -86,7 +85,6 @@ def load_country_data(gini_path=None, gdp_path=None, unemployment_path=None):
             country_df = country_df.merge(gdp_df, on="country", how="outer")
         else:
             country_df = gdp_df
-        logger.info(f"Loaded GDP data for {len(gdp_df)} countries")
     else:
         logger.warning(f"GDP data file not found: {gdp_path}")
 
@@ -101,7 +99,6 @@ def load_country_data(gini_path=None, gdp_path=None, unemployment_path=None):
             country_df = country_df.merge(unemp_df, on="country", how="outer")
         else:
             country_df = unemp_df
-        logger.info(f"Loaded unemployment data for {len(unemp_df)} countries")
     else:
         logger.warning(f"Unemployment data file not found: {unemployment_path}")
 
@@ -112,7 +109,6 @@ def load_country_data(gini_path=None, gdp_path=None, unemployment_path=None):
         )
 
     country_df["country"] = country_df["country"].str.upper()
-    logger.info(f"Merged country data: {len(country_df)} countries, {len(country_df.columns)} variables")
 
     return country_df
 
@@ -137,7 +133,6 @@ def load_institutional_data(filepath=None):
 
     inst_df = pd.read_csv(filepath)
     inst_df["country"] = inst_df["country"].str.upper()
-    logger.info(f"Loaded institutional data for {len(inst_df)} countries")
 
     for col in inst_df.columns:
         if col != "country":
@@ -168,7 +163,6 @@ def load_ai_exposure_data(filepath=None):
 
     ai_df = pd.read_csv(filepath)
     ai_df["country"] = ai_df["country"].str.upper()
-    logger.info(f"Loaded AI exposure data for {len(ai_df)} countries")
 
     return ai_df
 
@@ -203,7 +197,6 @@ def merge_country_data(ess_df, country_df, country_var=None):
     if n_before != n_after:
         logger.warning(f"Merge changed sample size: {n_before} -> {n_after}")
 
-    logger.info(f"Merged country-level data: {len(merged_df):,} observations")
     return merged_df
 
 

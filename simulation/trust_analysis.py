@@ -85,7 +85,7 @@ def figure_1_phase_diagram(data):
     path = FIGURE_DIR / "trust_sim_01_phase_diagram.png"
     fig.savefig(path)
     plt.close(fig)
-    print(f"  Saved: {path}")
+
 
 
 def figure_2_regime_comparison(data):
@@ -138,7 +138,7 @@ def figure_2_regime_comparison(data):
     path = FIGURE_DIR / "trust_sim_02_regime_comparison.png"
     fig.savefig(path)
     plt.close(fig)
-    print(f"  Saved: {path}")
+
 
 
 def figure_3_tipping_heatmap(data):
@@ -188,7 +188,7 @@ def figure_3_tipping_heatmap(data):
     path = FIGURE_DIR / "trust_sim_03_tipping_heatmap.png"
     fig.savefig(path)
     plt.close(fig)
-    print(f"  Saved: {path}")
+
 
 
 def figure_4_education_trust_scatter(data):
@@ -263,7 +263,7 @@ def figure_4_education_trust_scatter(data):
     path = FIGURE_DIR / "trust_sim_04_education_trust_scatter.png"
     fig.savefig(path)
     plt.close(fig)
-    print(f"  Saved: {path}")
+
 
 
 def main():

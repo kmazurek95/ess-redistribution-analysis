@@ -129,7 +129,6 @@ def run_interaction_model(df, dv, dv_label):
 
 
 def main():
-    print("Loading data...")
     df = load_data()
     print(f"  {len(df):,} observations, {df['country'].nunique()} countries")
 

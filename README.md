@@ -79,33 +79,7 @@ Level-1 predictors are grand-mean centered. Level-2 predictors are z-score stand
 
 ## Repository Structure
 
-```
-ess-redistribution-analysis/
-├── config.py                    # Paths, variable mappings, regime classifications
-├── requirements.txt             # Python dependencies
-├── data/
-│   ├── raw/                     # ESS9e03_3.dta (user must download)
-│   ├── processed/               # Analysis-ready dataset
-│   └── external/                # Country-level CSV files
-├── src/                         # Data loading, preparation, modeling, visualization
-├── notebooks/
-│   ├── 01_data_exploration.ipynb
-│   ├── 02_data_preparation_clean.ipynb
-│   ├── 03_replication_analysis.ipynb    # Core 7-model redistribution sequence
-│   ├── 04_welfare_regime_extension.ipynb
-│   └── 05_ai_exposure_extension.ipynb
-├── scripts/
-│   ├── trust_model_analysis.py          # Trust model sequence (T1-T7)
-│   └── alternative_dv_icc_check.py      # ICC comparison across DVs
-├── simulation/
-│   ├── model.py / run_experiments.py    # Redistribution: Gini shock simulation
-│   ├── trust_model.py / trust_experiments.py  # Trust: corruption shock simulation
-│   └── analysis.py / trust_analysis.py  # Visualization for both
-├── outputs/
-│   ├── figures/                 # All plots (simulation/, trust/)
-│   └── tables/                  # Coefficient tables, fit statistics
-└── docs/                        # Methodology, variable codebook, findings
-```
+`notebooks/` 01-05 run the core analysis; `06_dual_dv_comparison` synthesizes both domains. `scripts/` has the trust model sequence and ICC checks. `simulation/` has agent-based models for both DVs. `docs/` has methodology, codebook, and findings. `src/` has shared data loading, preparation, and visualization code.
 
 ## Reproduction
 

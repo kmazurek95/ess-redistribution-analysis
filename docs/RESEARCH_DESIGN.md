@@ -14,27 +14,15 @@ Multilevel analysis of redistribution preferences and institutional trust across
 
 ## Analytical Strategy
 
-The project proceeds in five stages, each building on the results of the previous:
+The analysis began with a seven-model multilevel sequence for redistribution preferences (gincdif, 1-5 scale), building from a null model (ICC = 8.0%) through individual and country-level predictors to cross-level interactions. The key finding is the income x Gini interaction (coef = 0.012, p = 0.002): higher inequality weakens the negative income effect on redistribution support.
 
-### Stage 1: Redistribution Models (M1-M7)
+Descriptive welfare regime comparisons (Notebook 04) showed post-communist countries with the highest redistribution support despite the least generous welfare states, consistent with the thermostat model.
 
-Seven-model sequence estimating multilevel linear models of redistribution preferences (gincdif, 1-5 scale) with individuals nested in countries. Begins with a null model to establish the ICC (8.0%), adds individual predictors (income, ideology, trust, demographics), country-level economic variables (Gini, GDP, unemployment), random slopes for income and ideology, and cross-level interactions. The key finding is the income x Gini interaction (coef = 0.012, p = 0.002): higher inequality weakens the negative income effect on redistribution support.
+Testing AI exposure (Felten AIOE scores) as a direct predictor of redistribution preferences returned null results across all specifications (p = 0.857). This redirected attention to an indirect channel: AI reshapes income distributions, which activates the income x Gini interaction.
 
-### Stage 2: Welfare Regime Extension (Notebook 04)
+An agent-based simulation parameterized by the regression coefficients tested whether inequality shocks produce discontinuous tipping. They do not - the interaction is too small, producing only gradual drift (~0.022 points per Gini percentage point). This lower-bound result motivated looking at other attitudinal domains.
 
-Descriptive analysis of redistribution preferences by Esping-Andersen regime type. Post-communist countries show highest support despite least generous welfare states; social democratic countries show lower support, consistent with the thermostat model. Full mixed-effects regime interaction models (M8-M13) require pymer4/R and are not yet estimated.
-
-### Stage 3: AI Exposure Extension (M14-M16)
-
-Tests whether Felten, Raj & Seamans (2021) AIOE scores predict redistribution preferences. Result: null across all specifications (p = 0.857). The direct pathway from AI exposure to redistribution attitudes is not supported. This null finding redirects attention to the indirect channel: AI reshapes income distributions, which activates the income x Gini interaction.
-
-### Stage 4: Redistribution Simulation
-
-Agent-based model parameterized by Stage 1 regression coefficients. Tests whether inequality shocks (motivated by AI-driven labor displacement) produce discontinuous tipping in redistribution attitude equilibria. Result: gradual drift only (~0.022 points per Gini percentage point). The income x Gini interaction is too small for tipping. This lower-bound result motivates the dual-domain comparison.
-
-### Stage 5: Trust Models and Simulation (T1-T7)
-
-ICC comparison reveals trust in parliament (18.1%) has 2.3x more between-country variation than redistribution (8.0%). A parallel model sequence tests education x corruption as the cross-level interaction, following Van der Meer & Hakhverdian (2017). The interaction is significant (coef = 0.050, p < 0.001) and 4x larger than the redistribution interaction. A second simulation applies corruption shocks with a self-reinforcing feedback loop (trust erosion degrades governance, which further erodes trust). Tipping observed at -15 CPI in all 5 representative countries.
+ICC comparison revealed that trust in parliament (18.1%) has 2.3x more between-country variation than redistribution. A parallel model sequence tested education x corruption as the cross-level interaction, following Van der Meer & Hakhverdian (2017). The interaction is significant (coef = 0.050, p < 0.001) and 4x larger than the redistribution interaction. A second simulation applied corruption shocks with a self-reinforcing feedback loop (trust erosion degrades governance, which further erodes trust). Tipping observed at -15 CPI in all 5 representative countries.
 
 ## Data
 

@@ -36,9 +36,6 @@ def create_meritocracy_index(df, merit_effort_var=None, merit_deserve_var=None, 
 
     df[index_name] = df[[merit_effort_var, merit_deserve_var]].mean(axis=1)
 
-    n_complete = df[index_name].notna().sum()
-    logger.info(f"Created meritocracy index: mean={df[index_name].mean():.2f}, n={n_complete:,}")
-
     return df
 
 
@@ -107,9 +104,6 @@ def assign_welfare_regime(df, country_var=None, classification="esping_andersen"
 
     df[regime_var_name] = df[country_var].map(country_to_regime)
 
-    n_assigned = df[regime_var_name].notna().sum()
-    logger.info(f"Assigned {classification} regime to {n_assigned:,}/{len(df):,} observations")
-
     return df
 
 
@@ -136,7 +130,6 @@ def create_institutional_indices(df, index_name="institutional_strength", compon
         component_zscores.append(z)
 
     df[index_name] = pd.concat(component_zscores, axis=1).mean(axis=1)
-    logger.info(f"Created institutional index '{index_name}' from {len(available_components)} components")
 
     return df
 
@@ -147,8 +140,6 @@ def create_analysis_dataset(
     standardize_level2=True, assign_regimes=True
 ):
     """Complete pipeline from raw data to analysis-ready dataset."""
-    logger = logging.getLogger("ess_analysis")
-
     if ess_df is None:
         ess_df = load_ess_data()
     if country_df is None:
@@ -207,7 +198,6 @@ def create_analysis_dataset(
         country_var = config.COUNTRY_VAR
         df["political_trust_l2"] = df.groupby(country_var)["trstprl"].transform("mean")
 
-    logger.info(f"Final dataset: {len(df):,} observations, {len(df.columns)} variables")
     return df
 
 

@@ -87,7 +87,7 @@ def figure_1_phase_diagram(data: dict):
     path = FIGURE_DIR / "sim_01_phase_diagram.png"
     fig.savefig(path)
     plt.close(fig)
-    print(f"  Saved: {path}")
+
 
 
 def figure_2_regime_comparison(data: dict):
@@ -142,7 +142,7 @@ def figure_2_regime_comparison(data: dict):
     path = FIGURE_DIR / "sim_02_regime_comparison.png"
     fig.savefig(path)
     plt.close(fig)
-    print(f"  Saved: {path}")
+
 
 
 def figure_3_tipping_heatmap(data: dict):
@@ -200,7 +200,7 @@ def figure_3_tipping_heatmap(data: dict):
     path = FIGURE_DIR / "sim_03_tipping_heatmap.png"
     fig.savefig(path)
     plt.close(fig)
-    print(f"  Saved: {path}")
+
 
 
 def figure_4_income_attitude_scatter(data: dict):
@@ -282,7 +282,7 @@ def figure_4_income_attitude_scatter(data: dict):
     path = FIGURE_DIR / "sim_04_income_attitude_scatter.png"
     fig.savefig(path)
     plt.close(fig)
-    print(f"  Saved: {path}")
+
 
 
 def main():

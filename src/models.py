@@ -123,8 +123,6 @@ def create_regression_table(models_list, output_format="dataframe"):
 
 def run_replication_sequence(df, outcome=None, group_var=None):
     """Run the full 7-model replication sequence."""
-    logger = logging.getLogger("ess_analysis")
-
     if outcome is None:
         outcome = config.OUTCOME_VAR_REVERSED
     if group_var is None:
@@ -152,14 +150,11 @@ def run_replication_sequence(df, outcome=None, group_var=None):
     formula_m7 = f"{outcome} ~ hinctnta_c + trstprl_c + agea_c + female + eduyrs_c + meritocracy_c + gini_z + gdp_z + unemployment_z + political_trust_l2 + hinctnta_c:gini_z + trstprl_c:gdp_z + (hinctnta_c + trstprl_c|{group_var})"
     models["Model 7"] = run_random_slope(df, formula_m7, group_var, ["hinctnta_c", "trstprl_c"])
 
-    logger.info(f"Replication sequence complete: {len(models)} models fitted")
     return models
 
 
 def run_regime_models(df, outcome=None, group_var=None, regime_var="welfare_regime"):
     """Run welfare regime extension models (Models 8-10)."""
-    logger = logging.getLogger("ess_analysis")
-
     if outcome is None:
         outcome = config.OUTCOME_VAR_REVERSED
     if group_var is None:
@@ -176,14 +171,11 @@ def run_regime_models(df, outcome=None, group_var=None, regime_var="welfare_regi
     formula_m10 = f"{outcome} ~ hinctnta_c + trstprl_c + agea_c + female + eduyrs_c + meritocracy_c + C({regime_var}) + trstprl_c:C({regime_var}) + (trstprl_c|{group_var})"
     models["Model 10"] = run_random_slope(df, formula_m10, group_var, ["trstprl_c"])
 
-    logger.info(f"Regime models complete: {len(models)} models fitted")
     return models
 
 
 def run_institutional_models(df, outcome=None, group_var=None):
     """Run institutional mediation models (Models 11-13)."""
-    logger = logging.getLogger("ess_analysis")
-
     if outcome is None:
         outcome = config.OUTCOME_VAR_REVERSED
     if group_var is None:
@@ -200,14 +192,11 @@ def run_institutional_models(df, outcome=None, group_var=None):
     formula_m13 = f"{outcome} ~ hinctnta_c + trstprl_c + agea_c + female + eduyrs_c + meritocracy_c + epl_z + almp_spending_z + hinctnta_c:almp_spending_z + (hinctnta_c|{group_var})"
     models["Model 13"] = run_random_slope(df, formula_m13, group_var, ["hinctnta_c"])
 
-    logger.info(f"Institutional models complete: {len(models)} models fitted")
     return models
 
 
 def run_ai_exposure_models(df, outcome=None, group_var=None, regime_var="welfare_regime"):
     """Run AI/automation exposure extension models (Models 14-16)."""
-    logger = logging.getLogger("ess_analysis")
-
     if outcome is None:
         outcome = config.OUTCOME_VAR_REVERSED
     if group_var is None:
@@ -224,5 +213,4 @@ def run_ai_exposure_models(df, outcome=None, group_var=None, regime_var="welfare
     formula_m16 = f"{outcome} ~ hinctnta_c + trstprl_c + agea_c + female + eduyrs_c + meritocracy_c + ai_exposure_oecd_z + C({regime_var}) + ai_exposure_oecd_z:C({regime_var}) + (1|{group_var})"
     models["Model 16"] = run_random_intercept(df, formula_m16, group_var)
 
-    logger.info(f"AI exposure models complete: {len(models)} models fitted")
     return models

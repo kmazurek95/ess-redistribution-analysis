@@ -32,15 +32,7 @@ TIPPING_THRESHOLD = 0.5  # shift in mean attitude that counts as tipping
 
 def run_all_experiments() -> dict:
     """Run the full experiment grid and return results."""
-    print("=" * 60)
-    print("  ESS Redistribution Simulation: Gini Shock Experiments")
-    print("=" * 60)
-
-    print("\nLoading empirical parameters...")
     config = build_config()
-    print(f"  {len(config.country_params)} countries loaded (HU, IT excluded)")
-    print(f"  Gini distribution: mean={config.gini_mean:.1f}, SD={config.gini_sd:.1f}")
-    print(f"  Income x Gini interaction: {config.income_gini_interaction:.4f}")
 
     sim_params = SimulationParams(
         n_agents=N_AGENTS,

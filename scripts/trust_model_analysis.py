@@ -27,10 +27,6 @@ sys.path.insert(0, str(PROJECT_ROOT))
 import config
 
 
-# ---------------------------------------------------------------------------
-# Data loading
-# ---------------------------------------------------------------------------
-
 def load_data():
     """Load analysis dataset, supplement with trstprl from raw ESS, merge corruption."""
     df = pd.read_csv(config.PROCESSED_DATA_DIR / "analysis_data.csv", low_memory=False)
@@ -55,10 +51,6 @@ def load_data():
 
     return df
 
-
-# ---------------------------------------------------------------------------
-# Model functions
-# ---------------------------------------------------------------------------
 
 L1_PREDICTORS = ["income_c", "education_c", "age_c", "female", "employed",
                  "ideology_c", "meritocracy_index_c"]
@@ -127,10 +119,6 @@ def extract_coef(result, param):
     ci_hi = coef + 1.96 * se
     return {"coef": coef, "se": se, "pval": pval, "ci": [ci_lo, ci_hi]}
 
-
-# ---------------------------------------------------------------------------
-# Figures
-# ---------------------------------------------------------------------------
 
 def plot_caterpillar(result, save_path):
     """Country random intercepts for trust."""
@@ -221,10 +209,6 @@ def plot_random_slopes(result, save_path):
     print(f"  Saved: {save_path}")
 
 
-# ---------------------------------------------------------------------------
-# Simulation parameter extraction
-# ---------------------------------------------------------------------------
-
 def extract_simulation_parameters(models, df):
     """Build simulation parameter JSON from trust model results."""
     best = models["T7"] if "T7" in models else models["T5"]
@@ -287,12 +271,7 @@ def extract_simulation_parameters(models, df):
     return params
 
 
-# ---------------------------------------------------------------------------
-# Main
-# ---------------------------------------------------------------------------
-
 def main():
-    print("Loading data...")
     df = load_data()
 
     # Check corruption merge
@@ -309,9 +288,7 @@ def main():
 
     models = {}
 
-    # -----------------------------------------------------------------------
     # T1: Null model
-    # -----------------------------------------------------------------------
     print("\n" + "=" * 70)
     print("  MODEL T1: Null (intercept only)")
     print("=" * 70)
@@ -330,9 +307,7 @@ def main():
                      "icc": icc1, "tau": tau1, "sigma2": sig1,
                      "loglik": r1.llf, "result": r1, "subset": subset_null}
 
-    # -----------------------------------------------------------------------
     # T2: Individual predictors
-    # -----------------------------------------------------------------------
     print("\n" + "=" * 70)
     print("  MODEL T2: Individual predictors")
     print("=" * 70)
@@ -347,9 +322,7 @@ def main():
     ed = extract_coef(info_t2["result"], "education_c")
     print(f"  education_c: coef = {ed['coef']:.4f}, SE = {ed['se']:.4f}, p = {ed['pval']:.4f}")
 
-    # -----------------------------------------------------------------------
     # T3: Add country-level predictors including corruption
-    # -----------------------------------------------------------------------
     print("\n" + "=" * 70)
     print("  MODEL T3: + Country-level predictors (incl. corruption)")
     print("=" * 70)
@@ -366,9 +339,7 @@ def main():
         sig = "***" if c["pval"] < 0.001 else "**" if c["pval"] < 0.01 else "*" if c["pval"] < 0.05 else ""
         print(f"    {v:<25} {c['coef']:>8.4f} ({c['se']:.4f}) p={c['pval']:.4f} {sig}")
 
-    # -----------------------------------------------------------------------
     # T4: Random slope for education
-    # -----------------------------------------------------------------------
     print("\n" + "=" * 70)
     print("  MODEL T4: + Random slope for education")
     print("=" * 70)
@@ -386,9 +357,7 @@ def main():
         if slope_var is not None:
             print(f"  Education slope variance: {slope_var:.6f}")
 
-    # -----------------------------------------------------------------------
     # T5: Education x Corruption interaction (THE KEY MODEL)
-    # -----------------------------------------------------------------------
     print("\n" + "=" * 70)
     print("  MODEL T5: Education x Corruption (KEY TEST)")
     print("=" * 70)
@@ -419,9 +388,7 @@ def main():
         sig = "***" if c["pval"] < 0.001 else "**" if c["pval"] < 0.01 else "*" if c["pval"] < 0.05 else ""
         print(f"    {param:<30} {c['coef']:>10.4f} ({c['se']:.4f}) p={c['pval']:.4f} {sig}")
 
-    # -----------------------------------------------------------------------
     # T6: Education x Gini interaction
-    # -----------------------------------------------------------------------
     print("\n" + "=" * 70)
     print("  MODEL T6: Education x Gini")
     print("=" * 70)
@@ -437,9 +404,7 @@ def main():
     print(f"  education_c:gini_z: coef = {interact_t6['coef']:.6f}, SE = {interact_t6['se']:.6f}, p = {interact_t6['pval']:.4f}")
     t6_sig = interact_t6["pval"] < 0.05
 
-    # -----------------------------------------------------------------------
     # T7: Full model (all significant interactions from T5-T6)
-    # -----------------------------------------------------------------------
     print("\n" + "=" * 70)
     print("  MODEL T7: Full model")
     print("=" * 70)
@@ -471,9 +436,7 @@ def main():
         print("  No significant interactions from T5/T6. T7 = T3 (no interactions).")
         models["T7"] = models["T3"]
 
-    # -----------------------------------------------------------------------
     # Summary table
-    # -----------------------------------------------------------------------
     print("\n\n" + "=" * 90)
     print("  TRUST MODEL RESULTS SUMMARY")
     print("=" * 90)
@@ -510,9 +473,7 @@ def main():
     headline = "SIGNIFICANT" if t5_sig else "NOT SIGNIFICANT"
     print(f"\n  HEADLINE: Education x Corruption interaction {headline} (p = {interact_t5['pval']:.4f})")
 
-    # -----------------------------------------------------------------------
     # Save results table
-    # -----------------------------------------------------------------------
     config.TABLES_DIR.mkdir(parents=True, exist_ok=True)
     rows = []
     for key in ["T1", "T2", "T3", "T4", "T5", "T6", "T7"]:
@@ -528,9 +489,7 @@ def main():
     pd.DataFrame(rows).to_csv(config.TABLES_DIR / "trust_model_results.csv", index=False)
     print(f"\n  Saved: {config.TABLES_DIR / 'trust_model_results.csv'}")
 
-    # -----------------------------------------------------------------------
     # Figures
-    # -----------------------------------------------------------------------
     fig_dir = config.FIGURES_DIR / "trust"
     fig_dir.mkdir(parents=True, exist_ok=True)
 
@@ -545,9 +504,7 @@ def main():
     if "random slope" in info_t4["re_spec"]:
         plot_random_slopes(info_t4["result"], fig_dir / "trust_random_slopes_education.png")
 
-    # -----------------------------------------------------------------------
     # Phase 3: Simulation parameters (only if T5 significant)
-    # -----------------------------------------------------------------------
     if t5_sig:
         print("\n" + "=" * 70)
         print("  PHASE 3: SIMULATION PARAMETER EXTRACTION")
@@ -573,9 +530,7 @@ def main():
         print(f"  Education x Corruption interaction p = {interact_t5['pval']:.4f} (not significant)")
         print(f"  No simulation parameter extraction.")
 
-    # -----------------------------------------------------------------------
     # Final comparison with redistribution
-    # -----------------------------------------------------------------------
     print("\n\n" + "=" * 70)
     print("  REDISTRIBUTION vs TRUST COMPARISON")
     print("=" * 70)

@@ -32,15 +32,7 @@ TIPPING_THRESHOLD = 1.0  # shift in mean trust that counts as tipping (0-10 scal
 
 def run_all_experiments():
     """Run the full experiment grid."""
-    print("=" * 60)
-    print("  Trust Simulation: Corruption Shock Experiments")
-    print("=" * 60)
-
-    print("\nLoading trust model parameters...")
     config = build_trust_config()
-    print(f"  {len(config.country_params)} countries loaded")
-    print(f"  CPI distribution: mean={config.corruption_mean:.1f}, SD={config.corruption_sd:.1f}")
-    print(f"  Education x Corruption interaction: {config.education_corruption_interaction:.4f}")
 
     sim_params = TrustSimParams(
         n_agents=N_AGENTS,
