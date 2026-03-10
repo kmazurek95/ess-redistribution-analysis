@@ -1,0 +1,14 @@
+
+================================================================================
+  ALTERNATIVE DV ICC COMPARISON
+================================================================================
+
+  DV                                  ICC      N_ind  N_countries        tau     sigma2
+  ------------------------------------------------------------------------------
+  Redistribution (gincdif)           8.0%     47,517           28     0.0775     0.8904
+  Trust in parliament               18.1%     47,301           28     1.2961     5.8588
+  Satisfaction with democracy       20.6%     46,619           28     1.3889     5.3460
+
+  Trust ICC (18.1%) > Redistribution ICC (8.0%):
+    Income x Gini interaction for trust: coef = -0.018494, SE = 0.012560, p = 0.1409
+    Not significant at alpha = 0.05
