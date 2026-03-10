@@ -1,0 +1,351 @@
+{
+  "model": "T7: Full model",
+  "dv": "trstprl",
+  "n_individuals": 31033,
+  "n_countries": 25,
+  "fixed_effects": {
+    "Intercept": {
+      "coef": 4.733313973168478,
+      "se": 0.1342037071188416,
+      "pval": 1.716734982831475e-272,
+      "ci_95": [
+        4.470274707215548,
+        4.996353239121408
+      ]
+    },
+    "income_c": {
+      "coef": 0.07972612718956802,
+      "se": 0.005423643952600702,
+      "pval": 6.4712751826323215e-49,
+      "ci_95": [
+        0.06909578504247064,
+        0.0903564693366654
+      ]
+    },
+    "education_c": {
+      "coef": 0.03867101498393443,
+      "se": 0.010098725556844317,
+      "pval": 0.0001285100715613918,
+      "ci_95": [
+        0.01887751289251957,
+        0.05846451707534929
+      ]
+    },
+    "age_c": {
+      "coef": 0.0006865529601292249,
+      "se": 0.0008228169379667443,
+      "pval": 0.4040593778591075,
+      "ci_95": [
+        -0.0009261682382855938,
+        0.002299274158544044
+      ]
+    },
+    "female": {
+      "coef": -0.0636451038249183,
+      "se": 0.026673944533179242,
+      "pval": 0.017030889502484818,
+      "ci_95": [
+        -0.11592603510994962,
+        -0.011364172539886981
+      ]
+    },
+    "employed": {
+      "coef": -0.23109069124179216,
+      "se": 0.03153334903003797,
+      "pval": 2.328232104838337e-13,
+      "ci_95": [
+        -0.2928960553406666,
+        -0.16928532714291775
+      ]
+    },
+    "ideology_c": {
+      "coef": 0.059734035258181495,
+      "se": 0.006032216670758258,
+      "pval": 4.059903740719852e-23,
+      "ci_95": [
+        0.047910890583495305,
+        0.07155717993286768
+      ]
+    },
+    "meritocracy_index_c": {
+      "coef": -0.2130885378377254,
+      "se": 0.01989683215791591,
+      "pval": 9.168649568607693e-27,
+      "ci_95": [
+        -0.2520863288672406,
+        -0.17409074680821024
+      ]
+    },
+    "gini_z": {
+      "coef": -0.07884451750874263,
+      "se": 0.1588813263121375,
+      "pval": 0.6197195508346209,
+      "ci_95": [
+        -0.3902519170805321,
+        0.23256288206304684
+      ]
+    },
+    "gdp_per_capita_z": {
+      "coef": 0.08845573839240456,
+      "se": 0.19341257576101,
+      "pval": 0.6474250817502947,
+      "ci_95": [
+        -0.290632910099175,
+        0.46754438688398414
+      ]
+    },
+    "unemployment_rate_z": {
+      "coef": 0.3052873181828962,
+      "se": 0.13487124802781658,
+      "pval": 0.0236020321567018,
+      "ci_95": [
+        0.040939672048375675,
+        0.5696349643174167
+      ]
+    },
+    "corruption_z": {
+      "coef": 0.9406163446662614,
+      "se": 0.22622642228129292,
+      "pval": 3.2125178245875025e-05,
+      "ci_95": [
+        0.49721255699492733,
+        1.3840201323375956
+      ]
+    },
+    "education_c:corruption_z": {
+      "coef": 0.049020285514522595,
+      "se": 0.012076486947296726,
+      "pval": 4.925143331360255e-05,
+      "ci_95": [
+        0.02535037109782101,
+        0.07269019993122418
+      ]
+    },
+    "education_c:gini_z": {
+      "coef": -0.001926956290561157,
+      "se": 0.011721082893662648,
+      "pval": 0.8694155743326053,
+      "ci_95": [
+        -0.024900278762139946,
+        0.021046366181017635
+      ]
+    }
+  },
+  "education_corruption_interaction": {
+    "coef": 0.049020285514522595,
+    "se": 0.012076486947296726,
+    "pval": 4.925143331360255e-05,
+    "ci_95": [
+      0.02535037109782101,
+      0.07269019993122418
+    ]
+  },
+  "random_effects": {
+    "tau": 0.4211776912309322,
+    "sigma2": 5.297877834057457,
+    "icc_null": 0.1811535290596603,
+    "icc_final": 0.07364462355166483
+  },
+  "country_parameters": {
+    "AT": {
+      "random_intercept": 0.42537736802852566,
+      "cpi_score": 76.0,
+      "corruption_z": 0.6079359390471997,
+      "gini": 30.8,
+      "regime": "Conservative/Corporatist",
+      "random_slope_education": -0.02285702977022552
+    },
+    "BE": {
+      "random_intercept": -0.4628558745801127,
+      "cpi_score": 75.0,
+      "corruption_z": 0.5414814031999349,
+      "gini": 27.2,
+      "regime": "Conservative/Corporatist",
+      "random_slope_education": 0.011745029824129049
+    },
+    "BG": {
+      "random_intercept": 0.0474676111873208,
+      "cpi_score": 42.0,
+      "corruption_z": -1.6515182797598005,
+      "gini": 41.3,
+      "regime": "Post-Communist",
+      "random_slope_education": 0.034661930180882386
+    },
+    "CH": {
+      "random_intercept": 0.8634449640609485,
+      "cpi_score": 85.0,
+      "corruption_z": 1.206026761672582,
+      "gini": 33.1,
+      "regime": "Conservative/Corporatist",
+      "random_slope_education": -0.04179078350397625
+    },
+    "CY": {
+      "random_intercept": -0.34726118802373945,
+      "cpi_score": 59.0,
+      "corruption_z": -0.5217911703563004,
+      "gini": 32.7,
+      "regime": "Mediterranean",
+      "random_slope_education": -0.029490286095473092
+    },
+    "CZ": {
+      "random_intercept": 0.5764587400451822,
+      "cpi_score": 59.0,
+      "corruption_z": -0.5217911703563004,
+      "gini": 25.0,
+      "regime": "Post-Communist",
+      "random_slope_education": -0.01033121092163675
+    },
+    "DE": {
+      "random_intercept": -0.24237190944012443,
+      "cpi_score": 80.0,
+      "corruption_z": 0.8737540824362584,
+      "gini": 31.9,
+      "regime": "Conservative/Corporatist",
+      "random_slope_education": 0.024544100349796153
+    },
+    "DK": {
+      "random_intercept": 0.2716555595497053,
+      "cpi_score": 88.0,
+      "corruption_z": 1.405390369214376,
+      "gini": 28.2,
+      "regime": "Social Democratic",
+      "random_slope_education": -0.0607610654591399
+    },
+    "EE": {
+      "random_intercept": -0.005851199526754992,
+      "cpi_score": 73.0,
+      "corruption_z": 0.4085723315054055,
+      "gini": 30.3,
+      "regime": "Post-Communist",
+      "random_slope_education": 0.019066736282727894
+    },
+    "ES": {
+      "random_intercept": -0.4812545172615524,
+      "cpi_score": 58.0,
+      "corruption_z": -0.5882457062035651,
+      "gini": 34.7,
+      "regime": "Mediterranean",
+      "random_slope_education": 0.03549568767015356
+    },
+    "FI": {
+      "random_intercept": -0.21422680173202616,
+      "cpi_score": 85.0,
+      "corruption_z": 1.206026761672582,
+      "gini": 27.3,
+      "regime": "Social Democratic",
+      "random_slope_education": -0.00653663828798031
+    },
+    "FR": {
+      "random_intercept": -0.910807747601774,
+      "cpi_score": 72.0,
+      "corruption_z": 0.3421177956581408,
+      "gini": 32.4,
+      "regime": "Conservative/Corporatist",
+      "random_slope_education": 0.06965181165713408
+    },
+    "GB": {
+      "random_intercept": -1.006154237495506,
+      "cpi_score": 80.0,
+      "corruption_z": 0.8737540824362584,
+      "gini": 33.7,
+      "regime": "Liberal",
+      "random_slope_education": 0.022186225044661587
+    },
+    "HR": {
+      "random_intercept": -1.0226187233588653,
+      "cpi_score": 48.0,
+      "corruption_z": -1.2527910646762122,
+      "gini": 29.7,
+      "regime": "Post-Communist",
+      "random_slope_education": 0.04837700057135689
+    },
+    "IE": {
+      "random_intercept": -0.5889121767654466,
+      "cpi_score": 73.0,
+      "corruption_z": 0.4085723315054055,
+      "gini": 30.6,
+      "regime": "Liberal",
+      "random_slope_education": 0.006952697327133277
+    },
+    "IS": {
+      "random_intercept": 0.028470212573564024,
+      "cpi_score": 76.0,
+      "corruption_z": 0.6079359390471997,
+      "gini": 26.6,
+      "regime": "Social Democratic",
+      "random_slope_education": -0.005295534425309594
+    },
+    "LT": {
+      "random_intercept": -0.3869149190880849,
+      "cpi_score": 59.0,
+      "corruption_z": -0.5217911703563004,
+      "gini": 35.7,
+      "regime": "Post-Communist",
+      "random_slope_education": -0.002969192774202567
+    },
+    "ME": {
+      "random_intercept": 0.9876281946480996,
+      "cpi_score": 45.0,
+      "corruption_z": -1.4521546722180063,
+      "gini": 36.8,
+      "regime": "Post-Communist",
+      "random_slope_education": -0.00401604137547468
+    },
+    "NL": {
+      "random_intercept": 0.3759982455753804,
+      "cpi_score": 82.0,
+      "corruption_z": 1.0066631541307878,
+      "gini": 28.1,
+      "regime": "Conservative/Corporatist",
+      "random_slope_education": -0.014331302219075774
+    },
+    "NO": {
+      "random_intercept": 1.03758482350282,
+      "cpi_score": 84.0,
+      "corruption_z": 1.1395722258253174,
+      "gini": 27.6,
+      "regime": "Social Democratic",
+      "random_slope_education": -0.017781028465346013
+    },
+    "PL": {
+      "random_intercept": 0.16765134893748412,
+      "cpi_score": 60.0,
+      "corruption_z": -0.45533663450903566,
+      "gini": 30.2,
+      "regime": "Post-Communist",
+      "random_slope_education": -0.06662839372477611
+    },
+    "PT": {
+      "random_intercept": 0.05650345012958527,
+      "cpi_score": 64.0,
+      "corruption_z": -0.18951849111997685,
+      "gini": 33.5,
+      "regime": "Mediterranean",
+      "random_slope_education": 0.030005187159067203
+    },
+    "RS": {
+      "random_intercept": 0.8786225100937178,
+      "cpi_score": 39.0,
+      "corruption_z": -1.8508818873015944,
+      "gini": 35.0,
+      "regime": "Post-Communist",
+      "random_slope_education": -0.10918116021693072
+    },
+    "SE": {
+      "random_intercept": 0.2721942995642288,
+      "cpi_score": 85.0,
+      "corruption_z": 1.206026761672582,
+      "gini": 30.0,
+      "regime": "Social Democratic",
+      "random_slope_education": 0.023067484261751075
+    },
+    "SI": {
+      "random_intercept": -0.31982803302430673,
+      "cpi_score": 60.0,
+      "corruption_z": -0.45533663450903566,
+      "gini": 24.6,
+      "regime": "Post-Communist",
+      "random_slope_education": 0.06621577691082751
+    }
+  }
+}

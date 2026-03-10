@@ -1,80 +1,38 @@
-# Agent-Based Simulation: Redistribution Attitude Dynamics Under Inequality Shocks
+# Simulation: Dual-Domain Attitude Dynamics Under Institutional Stress
 
-## Design Summary
+This directory contains two agent-based simulations exploring tipping dynamics in political attitudes. The comparison between domains is the central research contribution.
 
-This simulation models the **indirect channel** from AI-driven labor displacement
-to redistribution preference dynamics. The direct effect of AI exposure on
-redistribution preferences is null (p = 0.857). Instead, the simulation uses AI
-as an exogenous source of inequality increases, which then activate the
-empirically estimated income x Gini interaction.
+## Simulation 1: Redistribution (inequality shocks)
 
-## Empirical Basis
+Models the indirect channel from AI-driven labor displacement to redistribution preferences. The direct effect of AI exposure is null (p = 0.857), so the simulation treats AI as a source of inequality increases that activate the income x Gini interaction (coef = 0.012, p = 0.002).
 
-All parameters come from the multilevel regression models in
-`outputs/simulation_parameters.json`, estimated from ESS Round 9 (2018) data
-(N = 31,393 individuals, 26 countries).
+**Result:** Gradual drift only (~0.022 points per Gini percentage point). No discontinuous tipping at any shock level. The interaction is too small.
 
-**Key mechanism:** The income x Gini interaction (coef = 0.012, p = 0.002) means
-that the relationship between income and redistribution preferences is
-*moderated by inequality*. As inequality (Gini) increases:
-- The negative income effect weakens (rich people become relatively more
-  supportive of redistribution)
-- This creates a nonlinearity that can produce tipping dynamics when inequality
-  shocks are large enough
+Files: `config.py`, `model.py`, `run_experiments.py`, `analysis.py`
 
-**Secondary mechanism:** The ideology x Gini interaction (coef = 0.028, p = 0.024)
-means ideological polarization on redistribution also shifts with inequality.
+## Simulation 2: Trust (corruption/governance shocks)
 
-## What Is Being Simulated
+Models trust erosion under governance quality degradation. The education x corruption interaction (coef = 0.050, p < 0.001) is 4x larger than the redistribution interaction. Includes a feedback loop: aggregate trust erosion degrades governance quality, which further erodes trust.
 
-1. **Agents** represent individuals with income, ideology, and redistribution
-   preferences, initialized from the empirical distributions
-2. **Countries** are characterized by their Gini coefficient, random intercept,
-   and welfare regime
-3. **AI shock** is modeled as an exogenous Gini increase (inequality shock),
-   representing the downstream labor market effects of AI adoption
-4. **Attitude updating** follows the empirical regression equation, with the
-   income x Gini interaction creating nonlinear dynamics as Gini changes
+**Result:** Tipping observed at -15 CPI in all 5 countries (shift > 1.0 point on 0-10 scale). The feedback loop amplifies shocks by ~40%.
 
-## What The Null AI Direct Effect Means
+Files: `trust_config.py`, `trust_model.py`, `trust_experiments.py`, `trust_analysis.py`
 
-The simulation does NOT model AI exposure as directly changing attitudes.
-Instead:
-- AI drives occupational restructuring and wage polarization
-- This increases the Gini coefficient
-- The Gini increase activates the income x Gini interaction
-- Attitudes shift nonlinearly as a result
+## Why two simulations
 
-This is a theory-driven extrapolation, not a confirmed causal chain. The
-empirical evidence establishes the income x Gini interaction; the simulation
-explores its dynamic implications under inequality shocks.
+The key structural difference is the feedback loop. Redistribution preferences have no self-reinforcing mechanism: wanting more redistribution does not cause less redistribution. Trust does: trust erodes, citizens disengage from institutions, governance quality declines, which erodes trust further. This is why the trust domain tips and redistribution does not, even though both have significant cross-level interactions.
 
-## Expected Outputs
+## Parameters
 
-- **Phase diagrams:** Mapping inequality shock magnitude to attitude equilibria
-- **Tipping thresholds:** Gini increase required to shift country from one
-  attitude equilibrium to another
-- **Regime comparisons:** How tipping thresholds differ across welfare regime
-  types (Social Democratic, Conservative, Liberal, Mediterranean, Post-Communist)
-- **Trajectory plots:** Country-specific attitude trajectories under varying
-  shock magnitudes
+- Redistribution: `../outputs/simulation_parameters.json` (from Models M1-M7)
+- Trust: `../outputs/trust_simulation_parameters.json` (from Models T1-T7)
 
-## Directory Structure
+Both use 5 representative countries (DK, DE, GB, ES, PL), 1,000 agents, 50 replications per condition.
 
-```
-simulation/
-├── README.md              # This file
-├── config.py              # Loads parameters from simulation_parameters.json
-├── model.py               # ABM classes (Country, Agent, Simulation)
-├── run_experiments.py     # Experiment runner (parameter sweeps)
-└── analysis.py            # Result analysis and visualization
-```
+## How it works
 
-## Parameter Source
-
-All simulation parameters are loaded from `../outputs/simulation_parameters.json`.
-This file contains:
-- Fixed effects (13 coefficients with SEs and p-values)
-- Random effects (country intercept variance, ideology slope variance)
-- Country-specific parameters (random intercepts, Gini, GDP, AI exposure, regime)
-- The income x Gini interaction from Model 5 (the key nonlinearity)
+1. Agents have income, education, ideology drawn from empirical distributions
+2. Countries defined by random intercepts, macro-level variables, welfare regime
+3. Shocks applied exogenously (Gini increase or CPI decrease)
+4. Attitudes update via empirical regression equation + social influence
+5. For trust only: feedback loop adjusts corruption z-score based on aggregate trust deficit

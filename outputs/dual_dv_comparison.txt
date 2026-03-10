@@ -1,0 +1,49 @@
+DUAL-DOMAIN COMPARISON: REDISTRIBUTION vs. INSTITUTIONAL TRUST
+================================================================
+
+                              Redistribution     Trust in Parliament
+                              (gincdif, 1-5)     (trstprl, 0-10)
+----------------------------------------------------------------
+ICC (null model)              8.0%               18.1%
+N individuals                 47,517             47,301
+N countries                   28                 28
+Between-country var (tau)     0.0775             1.2961
+Residual var (sigma^2)        0.8904             5.8588
+
+Cross-level interaction:
+  Tested                      income x Gini      education x corruption
+  Coefficient                 0.012              0.050
+  SE                          0.004              0.010
+  p-value                     0.002              <0.001
+  95% CI                      [0.005, 0.019]     [0.030, 0.070]
+  Significant?                YES                YES
+
+Country-level direct effects:
+  Key L2 predictor            Gini (ns, p=0.14)  Corruption (p<0.001)
+  L2 coefficient              0.082              0.934
+
+AI exposure direct effect:
+  Coefficient                 -0.014             not tested separately
+  p-value                     0.857              N/A
+
+Simulation:
+  Shock type                  Gini increase      CPI decrease (governance)
+  Shock magnitudes            3, 5, 10, 15 pp    5, 10, 15, 20 CPI pts
+  Tipping observed?           NO                 YES (at -15 CPI)
+  Max shift (largest shock)   ~0.33 points       ~1.44 points
+  Shift rate                  0.022 per Gini pp  0.072 per CPI pt
+
+Feedback loop?                NO                 YES
+  Mechanism                   N/A                trust -> disengagement ->
+                                                 governance decline -> trust
+  Amplification               N/A                ~40% beyond direct effect
+
+Structural vulnerability      LOW                HIGH
+  Reasoning                   Small interaction   Large interaction (4x),
+                              (beta=0.012),       high ICC (2.3x),
+                              no feedback loop,   feedback loop,
+                              gradual drift only  tipping at -15 CPI
+
+Additional DV tested:
+  Democratic satisfaction      ICC = 20.6% (highest of all three DVs)
+  (stfdem, 0-10)              Not yet modeled beyond null model

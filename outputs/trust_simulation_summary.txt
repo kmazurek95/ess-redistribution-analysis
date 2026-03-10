@@ -1,0 +1,48 @@
+
+======================================================================
+  TRUST SIMULATION RESULTS SUMMARY
+======================================================================
+
+Baseline trust levels (mean across 50 replications):
+  DK (Social Democratic): 6.210 (CPI = 88.0)
+  DE (Conservative/Corporatist): 5.135 (CPI = 80.0)
+  GB (Liberal): 4.349 (CPI = 80.0)
+  ES (Mediterranean): 3.481 (CPI = 58.0)
+  PL (Post-Communist): 4.326 (CPI = 60.0)
+
+Tipping results (shift > 1.0 from baseline):
+  -5 CPI shock: none
+  -10 CPI shock: none
+  -15 CPI shock: DK, DE, GB, ES, PL
+  -20 CPI shock: DK, DE, GB, ES, PL
+
+Detailed shifts by shock magnitude:
+  Country Regime                             5       10       15       20
+  -----------------------------------------------------------------------
+  DK     Social Democratic             -0.359   -0.687   -1.016   -1.346
+  DE     Conservative/Corporatist      -0.376   -0.701   -1.026   -1.354
+  GB     Liberal                       -0.382   -0.707   -1.033   -1.361
+  ES     Mediterranean                 -0.445   -0.770   -1.102   -1.428
+  PL     Post-Communist                -0.442   -0.772   -1.104   -1.437
+
+Feedback-driven corruption drift (z-score change):
+  DK: -1.4255 at -20 CPI shock
+  DE: -1.4497 at -20 CPI shock
+  GB: -1.4498 at -20 CPI shock
+  ES: -1.5158 at -20 CPI shock
+  PL: -1.5099 at -20 CPI shock
+
+======================================================================
+  REDISTRIBUTION vs TRUST SIMULATION COMPARISON
+======================================================================
+
+                                     Redistribution              Trust
+  ------------------------------------------------------------------
+  ICC                                          8.0%              18.1%
+  Key interaction                     income x Gini    ed x corruption
+  Interaction p-value                         0.002             <0.001
+  Interaction coef                            0.012              0.050
+  Mechanism                                economic         governance
+  Max shift (largest shock)                   ~0.33              1.437
+  Tipping observed                               No                Yes
+  Feedback loop                                  No                Yes

@@ -78,7 +78,7 @@ N = 30,656 individuals in 25 countries. All models converged cleanly.
 
 **Interpretation:** AI labor market exposure does not directly shift redistribution
 attitudes. The mechanism, if it exists, operates indirectly through AI's effects
-on income distributions and inequality — which then activate the significant
+on income distributions and inequality  - which then activate the significant
 income x Gini interaction identified in the core models.
 
 ---
@@ -164,6 +164,109 @@ tipping in redistribution attitude equilibria under AI-motivated inequality shoc
   multiple attitudinal domains, (b) mechanisms beyond the cross-sectional income x
   Gini channel (media framing, political mobilization, network contagion), or
   (c) inequality shocks substantially larger than current AI adoption trends suggest.
-- For the ROOTS research agenda, this motivates multi-scale, multi-domain modeling:
-  the single-channel, single-domain model sets the lower bound; the PhD research
-  would explore what additional mechanisms push the system past it.
+- This motivates multi-domain modeling: the single-channel, single-domain model
+  sets the lower bound; the trust analysis below explores whether a different
+  attitudinal domain is structurally more vulnerable.
+
+---
+
+## Trust in Parliament (trstprl) - Alternative DV
+
+**ICC comparison:** Trust in parliament (18.1%) and satisfaction with democracy
+(20.6%) both show substantially more between-country variation than redistribution
+preferences (8.0%). Trust was selected for full modeling because of the established
+literature on education x corruption cross-level interactions.
+
+**Model sequence (T1-T7), N = 31,033 in 25 countries:**
+
+| Model | ICC | LogLik | Key result |
+|-------|-----|--------|------------|
+| T1: Null | 18.1% | -109,012 | |
+| T2: Individual predictors | 16.1% | -76,214 | education: 0.057 (p < 0.001) |
+| T3: + Country-level | 7.8% | -70,124 | corruption: 0.928 (p < 0.001) |
+| T4: + Random slope (education) | 8.9% | -70,018 | slope variance: 0.0043 |
+| T5: Education x Corruption | 7.3% | -70,013 | **coef = 0.050, p < 0.001** |
+| T6: Education x Gini | 8.6% | -70,019 | coef = -0.026, p = 0.045 |
+| T7: Full model | 7.4% | -70,016 | ed x gini drops to p = 0.87 |
+
+**Corruption is the dominant country-level predictor of trust** (coef = 0.93,
+p < 0.001). A 1 SD increase in CPI (less corrupt) raises trust by nearly a full
+point on the 0-10 scale. Gini, GDP, and unemployment are not significant.
+
+**Education x Corruption interaction (coef = 0.050, p < 0.001):** Education's
+positive effect on trust is amplified in less corrupt countries. In corrupt
+countries, education buys less trust. This is consistent with Van der Meer &
+Hakhverdian (2017) and Noordzij et al. (2021): educated citizens are better at
+evaluating governance quality, so their trust is more responsive to corruption.
+
+**Education x Gini is not independently significant.** Marginally significant alone
+(p = 0.045) but drops to p = 0.87 in the full model. Corruption is doing the work.
+
+---
+
+## Trust Simulation Results
+
+The trust simulation tests whether the education x corruption interaction can
+produce tipping under governance quality shocks.
+
+**Design:**
+
+- Same 5 representative countries as the redistribution simulation
+- Shocks: CPI decreases of 5, 10, 15, 20 points (modeling governance degradation)
+- Simultaneous education distribution expansion (more educated cohorts)
+- Feedback loop: aggregate trust erosion degrades governance quality
+  (corruption z decreases by 0.02 * trust deficit per timestep)
+- 50 replications per condition, 1,000 agents per country
+
+**Results:**
+
+| Country | Regime | Baseline | -5 CPI | -10 CPI | -15 CPI | -20 CPI |
+|---------|--------|----------|--------|---------|---------|---------|
+| DK | Social Democratic | 6.21 | -0.36 | -0.69 | -1.02 | -1.35 |
+| DE | Conservative | 5.14 | -0.38 | -0.70 | -1.03 | -1.35 |
+| GB | Liberal | 4.35 | -0.38 | -0.71 | -1.03 | -1.36 |
+| ES | Mediterranean | 3.48 | -0.45 | -0.77 | -1.10 | -1.43 |
+| PL | Post-Communist | 4.33 | -0.44 | -0.77 | -1.10 | -1.44 |
+
+**Tipping observed at -15 CPI in all 5 countries** (shift > 1.0 point). Mediterranean
+and Post-Communist countries show slightly larger shifts (~0.07 points more than
+Social Democratic/Conservative/Liberal), reflecting lower baseline governance quality.
+
+**Feedback amplification:** The trust-governance feedback loop produces corruption
+z-score drift of -1.4 to -1.5 at the largest shock level, amplifying the direct
+effect by approximately 40%.
+
+---
+
+## Dual-Domain Comparison
+
+The project's central finding is that different political attitudes have
+fundamentally different vulnerability structures under institutional stress.
+
+**Redistribution preferences (gincdif):**
+- ICC = 8.0%. Modest between-country variation.
+- Nonlinearity: income x Gini (coef = 0.012, p = 0.002). Higher inequality weakens
+  the negative income effect.
+- Simulation: gradual drift only. The interaction is too small for discontinuous
+  tipping under plausible inequality shocks (3-15 Gini points).
+- No feedback loop: wanting more redistribution does not cause less redistribution.
+
+**Institutional trust (trstprl):**
+- ICC = 18.1%. Substantial between-country variation - 2.3x redistribution.
+- Nonlinearity: education x corruption (coef = 0.050, p < 0.001). Educated citizens
+  are more sensitive to governance quality.
+- Simulation: tipping at -15 CPI in all countries. The education x corruption
+  interaction is 4x larger than income x Gini.
+- Feedback loop: trust erodes -> citizens disengage -> governance worsens -> trust
+  erodes further. This self-reinforcing structure is absent in redistribution.
+
+**Democratic satisfaction (stfdem):**
+- ICC = 20.6%. Highest between-country variation of any DV tested. Not yet modeled
+  beyond the null model.
+
+**Implication:** AI-driven economic restructuring threatens democratic stability not
+primarily through shifting redistribution preferences (which drift slowly and lack
+feedback) but potentially through eroding institutional trust (which has higher
+between-country variation, a larger cross-level interaction, and a self-reinforcing
+erosion mechanism). The domain most critical for democratic function is structurally
+the most vulnerable.

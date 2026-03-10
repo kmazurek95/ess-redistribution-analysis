@@ -1,0 +1,375 @@
+{
+  "metadata": {
+    "description": "Corruption shock experiments across 5 welfare regime types",
+    "dv": "trstprl (trust in parliament, 0-10)",
+    "n_agents_per_country": 1000,
+    "n_replications": 50,
+    "convergence_threshold": 0.001,
+    "max_timesteps": 500,
+    "social_influence_strength": 0.05,
+    "majority_threshold": 5.0,
+    "feedback_strength": 0.02,
+    "tipping_threshold": 1.0,
+    "shock_magnitudes_cpi_points": [
+      0.0,
+      5.0,
+      10.0,
+      15.0,
+      20.0
+    ],
+    "representative_countries": {
+      "Social Democratic": "DK",
+      "Conservative/Corporatist": "DE",
+      "Liberal": "GB",
+      "Mediterranean": "ES",
+      "Post-Communist": "PL"
+    }
+  },
+  "results": {
+    "DK": {
+      "regime": "Social Democratic",
+      "cpi_raw": 88.0,
+      "random_intercept": 0.2716555595497053,
+      "shocks": {
+        "0.0": {
+          "mean": 6.209769925808768,
+          "sd_across_reps": 0.010903224733463918,
+          "mean_within_sd": 0.4208779524713329,
+          "pct_above_threshold": 99.794,
+          "cpi_raw": 88.0,
+          "corruption_z": 1.4047690013400638,
+          "mean_corruption_drift": -0.0008357586888175073,
+          "n_steps_mean": 14.58,
+          "shift_from_baseline": 0.0,
+          "tipped": false
+        },
+        "5.0": {
+          "mean": 5.850501606338003,
+          "sd_across_reps": 0.01096816321447262,
+          "mean_within_sd": 0.4005215622634313,
+          "pct_above_threshold": 98.37,
+          "cpi_raw": 83.0,
+          "corruption_z": 1.0224521582884423,
+          "mean_corruption_drift": -0.3838104319225486,
+          "n_steps_mean": 16.04,
+          "shift_from_baseline": -0.35926831947076465,
+          "tipped": false
+        },
+        "10.0": {
+          "mean": 5.5232691583958236,
+          "sd_across_reps": 0.009218298676027829,
+          "mean_within_sd": 0.38894535119976514,
+          "pct_above_threshold": 90.96199999999999,
+          "cpi_raw": 78.0,
+          "corruption_z": 0.6738889100249418,
+          "mean_corruption_drift": -0.7308210754410797,
+          "n_steps_mean": 10.62,
+          "shift_from_baseline": -0.6865007674129444,
+          "tipped": false
+        },
+        "15.0": {
+          "mean": 5.194186935699297,
+          "sd_across_reps": 0.010745096294796936,
+          "mean_within_sd": 0.3871862878246421,
+          "pct_above_threshold": 69.116,
+          "cpi_raw": 73.0,
+          "corruption_z": 0.32670145494534547,
+          "mean_corruption_drift": -1.0785002898733247,
+          "n_steps_mean": 15.82,
+          "shift_from_baseline": -1.015582990109471,
+          "tipped": true
+        },
+        "20.0": {
+          "mean": 4.864085376895287,
+          "sd_across_reps": 0.009797423229438301,
+          "mean_within_sd": 0.37763651604111353,
+          "pct_above_threshold": 35.82,
+          "cpi_raw": 68.0,
+          "corruption_z": -0.019800999158369956,
+          "mean_corruption_drift": -1.4255346844090837,
+          "n_steps_mean": 10.66,
+          "shift_from_baseline": -1.3456845489134812,
+          "tipped": true
+        }
+      },
+      "baseline_mean": 6.209769925808768,
+      "baseline_pct": 99.794
+    },
+    "DE": {
+      "regime": "Conservative/Corporatist",
+      "cpi_raw": 80.0,
+      "random_intercept": -0.24237190944012443,
+      "shocks": {
+        "0.0": {
+          "mean": 5.134722164574745,
+          "sd_across_reps": 0.016162382832029067,
+          "mean_within_sd": 0.532512673253105,
+          "pct_above_threshold": 59.652,
+          "cpi_raw": 80.0,
+          "corruption_z": 0.8737540824362584,
+          "mean_corruption_drift": -0.0013207712980709285,
+          "n_steps_mean": 16.36,
+          "shift_from_baseline": 0.0,
+          "tipped": false
+        },
+        "5.0": {
+          "mean": 4.758709509846996,
+          "sd_across_reps": 0.012142340533540618,
+          "mean_within_sd": 0.4647374173826091,
+          "pct_above_threshold": 30.208,
+          "cpi_raw": 75.0,
+          "corruption_z": 0.46644749972921534,
+          "mean_corruption_drift": -0.4075593163292058,
+          "n_steps_mean": 12.08,
+          "shift_from_baseline": -0.3760126547277487,
+          "tipped": false
+        },
+        "10.0": {
+          "mean": 4.433382221359957,
+          "sd_across_reps": 0.013264786733530733,
+          "mean_within_sd": 0.4343655036977567,
+          "pct_above_threshold": 9.562000000000001,
+          "cpi_raw": 70.0,
+          "corruption_z": 0.11941768452424344,
+          "mean_corruption_drift": -0.7549026928061484,
+          "n_steps_mean": 12.38,
+          "shift_from_baseline": -0.701339943214788,
+          "tipped": false
+        },
+        "15.0": {
+          "mean": 4.108580514229168,
+          "sd_across_reps": 0.010231098227702117,
+          "mean_within_sd": 0.4059153202402829,
+          "pct_above_threshold": 1.4000000000000004,
+          "cpi_raw": 65.0,
+          "corruption_z": -0.2282615472853057,
+          "mean_corruption_drift": -1.1021751814039102,
+          "n_steps_mean": 12.12,
+          "shift_from_baseline": -1.0261416503455774,
+          "tipped": true
+        },
+        "20.0": {
+          "mean": 3.7808819964877887,
+          "sd_across_reps": 0.012669358085694665,
+          "mean_within_sd": 0.3867756305016829,
+          "pct_above_threshold": 0.10999999999999999,
+          "cpi_raw": 60.0,
+          "corruption_z": -0.5760203540319916,
+          "mean_corruption_drift": -1.449660559895982,
+          "n_steps_mean": 15.08,
+          "shift_from_baseline": -1.3538401680869563,
+          "tipped": true
+        }
+      },
+      "baseline_mean": 5.134722164574745,
+      "baseline_pct": 59.652
+    },
+    "GB": {
+      "regime": "Liberal",
+      "cpi_raw": 80.0,
+      "random_intercept": -1.006154237495506,
+      "shocks": {
+        "0.0": {
+          "mean": 4.349101091086234,
+          "sd_across_reps": 0.015851862590085607,
+          "mean_within_sd": 0.5018823011279919,
+          "pct_above_threshold": 9.79,
+          "cpi_raw": 80.0,
+          "corruption_z": 0.8713437980176215,
+          "mean_corruption_drift": -0.0006031110188292477,
+          "n_steps_mean": 10.34,
+          "shift_from_baseline": 0.0,
+          "tipped": false
+        },
+        "5.0": {
+          "mean": 3.9666826891190623,
+          "sd_across_reps": 0.013564791543929066,
+          "mean_within_sd": 0.4600454462831145,
+          "pct_above_threshold": 1.234,
+          "cpi_raw": 75.0,
+          "corruption_z": 0.4646744055950073,
+          "mean_corruption_drift": -0.40773020440630453,
+          "n_steps_mean": 14.66,
+          "shift_from_baseline": -0.3824184019671715,
+          "tipped": false
+        },
+        "10.0": {
+          "mean": 3.642481689358961,
+          "sd_across_reps": 0.0134465344484051,
+          "mean_within_sd": 0.42872994434600026,
+          "pct_above_threshold": 0.084,
+          "cpi_raw": 70.0,
+          "corruption_z": 0.11841623779151518,
+          "mean_corruption_drift": -0.7550837787506082,
+          "n_steps_mean": 15.34,
+          "shift_from_baseline": -0.7066194017272727,
+          "tipped": false
+        },
+        "15.0": {
+          "mean": 3.3158220002265084,
+          "sd_across_reps": 0.012871013743634387,
+          "mean_within_sd": 0.40186996125822205,
+          "pct_above_threshold": 0.0,
+          "cpi_raw": 65.0,
+          "corruption_z": -0.2278806853142389,
+          "mean_corruption_drift": -1.1023578516769619,
+          "n_steps_mean": 15.02,
+          "shift_from_baseline": -1.0332790908597254,
+          "tipped": true
+        },
+        "20.0": {
+          "mean": 2.988212013660733,
+          "sd_across_reps": 0.012218848156287453,
+          "mean_within_sd": 0.3828318922945394,
+          "pct_above_threshold": 0.0,
+          "cpi_raw": 60.0,
+          "corruption_z": -0.5764743367729198,
+          "mean_corruption_drift": -1.449766152821776,
+          "n_steps_mean": 16.34,
+          "shift_from_baseline": -1.360889077425501,
+          "tipped": true
+        }
+      },
+      "baseline_mean": 4.349101091086234,
+      "baseline_pct": 9.79
+    },
+    "ES": {
+      "regime": "Mediterranean",
+      "cpi_raw": 58.0,
+      "random_intercept": -0.4812545172615524,
+      "shocks": {
+        "0.0": {
+          "mean": 3.481335537054868,
+          "sd_across_reps": 0.011222712991705158,
+          "mean_within_sd": 0.3955725940324048,
+          "pct_above_threshold": 0.002,
+          "cpi_raw": 58.0,
+          "corruption_z": -0.5887775266409347,
+          "mean_corruption_drift": -0.0004984175385206102,
+          "n_steps_mean": 10.78,
+          "shift_from_baseline": 0.0,
+          "tipped": false
+        },
+        "5.0": {
+          "mean": 3.03586600074991,
+          "sd_across_reps": 0.011048818802374653,
+          "mean_within_sd": 0.3739256711994878,
+          "pct_above_threshold": 0.0,
+          "cpi_raw": 53.0,
+          "corruption_z": -1.0620835531340567,
+          "mean_corruption_drift": -0.47378525561378665,
+          "n_steps_mean": 13.8,
+          "shift_from_baseline": -0.44546953630495834,
+          "tipped": false
+        },
+        "10.0": {
+          "mean": 2.711545382628086,
+          "sd_across_reps": 0.010690372709164644,
+          "mean_within_sd": 0.36835378514832484,
+          "pct_above_threshold": 0.0,
+          "cpi_raw": 48.0,
+          "corruption_z": -1.40898357007858,
+          "mean_corruption_drift": -0.8212013388889897,
+          "n_steps_mean": 16.0,
+          "shift_from_baseline": -0.769790154426782,
+          "tipped": false
+        },
+        "15.0": {
+          "mean": 2.3795693148828,
+          "sd_across_reps": 0.01071730100186425,
+          "mean_within_sd": 0.3699799077385925,
+          "pct_above_threshold": 0.0,
+          "cpi_raw": 43.0,
+          "corruption_z": -1.7564390298518762,
+          "mean_corruption_drift": -1.1685142075837671,
+          "n_steps_mean": 15.82,
+          "shift_from_baseline": -1.1017662221720683,
+          "tipped": true
+        },
+        "20.0": {
+          "mean": 2.0537043841804454,
+          "sd_across_reps": 0.010358703217943748,
+          "mean_within_sd": 0.38229556659968056,
+          "pct_above_threshold": 0.0,
+          "cpi_raw": 38.0,
+          "corruption_z": -2.103966032180488,
+          "mean_corruption_drift": -1.5157971890098358,
+          "n_steps_mean": 15.2,
+          "shift_from_baseline": -1.4276311528744228,
+          "tipped": true
+        }
+      },
+      "baseline_mean": 3.481335537054868,
+      "baseline_pct": 0.002
+    },
+    "PL": {
+      "regime": "Post-Communist",
+      "cpi_raw": 60.0,
+      "random_intercept": 0.16765134893748412,
+      "shocks": {
+        "0.0": {
+          "mean": 4.325767041537638,
+          "sd_across_reps": 0.011763413613101589,
+          "mean_within_sd": 0.40197262582278087,
+          "pct_above_threshold": 4.675999999999999,
+          "cpi_raw": 60.0,
+          "corruption_z": -0.45537733028236804,
+          "mean_corruption_drift": -0.0005491586315271779,
+          "n_steps_mean": 10.04,
+          "shift_from_baseline": 0.0,
+          "tipped": false
+        },
+        "5.0": {
+          "mean": 3.8834970697386177,
+          "sd_across_reps": 0.014140452267874859,
+          "mean_within_sd": 0.4390206091702432,
+          "pct_above_threshold": 0.586,
+          "cpi_raw": 55.0,
+          "corruption_z": -0.9246924832664912,
+          "mean_corruption_drift": -0.4680426830380931,
+          "n_steps_mean": 17.08,
+          "shift_from_baseline": -0.4422699717990204,
+          "tipped": false
+        },
+        "10.0": {
+          "mean": 3.5539065302581507,
+          "sd_across_reps": 0.014503318648972464,
+          "mean_within_sd": 0.47433073429332745,
+          "pct_above_threshold": 0.11399999999999999,
+          "cpi_raw": 50.0,
+          "corruption_z": -1.270112200556788,
+          "mean_corruption_drift": -0.815159568965839,
+          "n_steps_mean": 13.6,
+          "shift_from_baseline": -0.7718605112794874,
+          "tipped": false
+        },
+        "15.0": {
+          "mean": 3.2220764513578164,
+          "sd_across_reps": 0.01705325308426378,
+          "mean_within_sd": 0.5108945048111718,
+          "pct_above_threshold": 0.032,
+          "cpi_raw": 45.0,
+          "corruption_z": -1.6178949925418131,
+          "mean_corruption_drift": -1.1626477190273687,
+          "n_steps_mean": 16.84,
+          "shift_from_baseline": -1.1036905901798217,
+          "tipped": true
+        },
+        "20.0": {
+          "mean": 2.8886904239713362,
+          "sd_across_reps": 0.01597749178480205,
+          "mean_within_sd": 0.5536400127211631,
+          "pct_above_threshold": 0.006000000000000001,
+          "cpi_raw": 40.0,
+          "corruption_z": -1.9653607517100518,
+          "mean_corruption_drift": -1.5098532673170033,
+          "n_steps_mean": 14.36,
+          "shift_from_baseline": -1.437076617566302,
+          "tipped": true
+        }
+      },
+      "baseline_mean": 4.325767041537638,
+      "baseline_pct": 4.675999999999999
+    }
+  }
+}

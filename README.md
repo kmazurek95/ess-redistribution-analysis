@@ -1,47 +1,42 @@
-# ESS Redistribution Analysis
+# ESS Redistribution and Trust Analysis
 
-**Multilevel analysis of redistribution preferences across 28 European countries**
+**Multilevel analysis of redistribution preferences and institutional trust across 28 European countries**
 
-How do individual income, political ideology, and country-level inequality interact to shape attitudes toward redistribution? This project uses European Social Survey Round 9 (2018) data with multilevel models to answer that question.
+What predicts redistribution preferences and institutional trust across European countries, and which domain is more vulnerable to tipping under AI-driven institutional stress? This project uses European Social Survey Round 9 (2018) data with multilevel models and agent-based simulation to answer that question.
 
 ## Key Findings
 
-- **7.7% of variance** in redistribution support is between countries (ICC = 0.077), justifying multilevel modeling
-- **Income reduces redistribution support** (b = -0.039, p < 0.001) - the self-interest effect
-- **Ideology is the strongest predictor** (b = -0.083, p < 0.001) - right-wing orientation reduces support
-- **Income x Gini interaction is significant** (b = 0.012, p = 0.002) - higher inequality *weakens* the negative income effect, meaning rich people in unequal countries are relatively more supportive of redistribution than rich people in equal countries
-- **Ideology x Gini interaction is significant** (b = 0.028, p = 0.024) - higher inequality weakens ideological polarization on redistribution
-- **AI exposure does NOT directly predict redistribution preferences** (b = -0.014, p = 0.857) - the direct "technological threat" hypothesis is rejected. The effect operates indirectly: AI-driven economic restructuring increases inequality, which activates the significant income x Gini interaction
+### Empirical results
 
-**Sample:** 31,393 individuals across 26 countries (complete cases from 48,436 in 28 countries)
+- **Redistribution ICC = 8.0%** across 28 countries. Income x Gini interaction significant (p = 0.002): higher inequality weakens the negative income effect on redistribution support.
+- **Trust ICC = 18.1%** - more than double the redistribution ICC. Education x corruption interaction significant (p < 0.001, coef = 0.050): educated citizens are more sensitive to governance quality. In clean countries, education increases trust; in corrupt countries, the effect weakens.
+- **AI exposure has no direct effect** on redistribution preferences (p = 0.857). The effect operates indirectly through AI's impact on inequality and governance quality.
 
-## Simulation: Inequality Shocks and Attitude Equilibria
+### Simulation results
 
-The simulation takes the empirical regression coefficients and asks: what happens to redistribution attitude equilibria when AI-driven labor displacement increases inequality?
+- **Redistribution: gradual drift, no tipping.** The income x Gini interaction (beta = 0.012) produces linear drift of ~0.022 points per Gini percentage point. No discontinuous tipping at any shock level. Welfare regimes differ in baselines, not sensitivity.
+- **Trust: tipping observed.** Corruption shocks of -15 CPI points produce shifts exceeding 1.0 point (on a 0-10 scale) in all 5 countries tested. The trust-governance feedback loop (erosion -> disengagement -> governance decline -> further erosion) amplifies shocks by ~40% beyond the direct effect.
+- **The structural difference:** trust has a self-reinforcing feedback loop that redistribution lacks. The domain most critical for democratic stability is also the most tipping-prone.
 
-**Design:** 5 representative countries (DK, DE, GB, ES, PL -- one per welfare regime type), 1,000 agents each, Gini shocks of 3-15 percentage points with simultaneous income distribution compression. 50 replications per condition. Shock magnitudes motivated by Minniti, Prettner & Venturini (2025), who find AI innovation reduces labor share by 0.5-1.6% in European regions.
+**Sample:** 31,393 individuals across 26 countries (redistribution models); 31,033 across 25 countries (trust models)
 
-**Key findings:**
-
-- **Gradual drift, not tipping.** The income x Gini interaction (beta = 0.012) produces linear drift of approximately 0.022 attitude points per Gini percentage point. No discontinuous tipping was observed at any shock level.
-- **Regime differences are in baselines, not sensitivity.** All welfare regime types shift at the same rate. Denmark, Germany, Spain, Poland, and the UK respond identically to equal-magnitude shocks.
-- **A 10pp Gini shock eliminates the income gradient.** The income-attitude slope flattens from -0.030 to approximately -0.001, meaning rich and poor converge in redistribution preferences.
+### Redistribution simulation
 
 ![Phase diagram: attitude equilibria under Gini shocks](outputs/figures/simulation/sim_01_phase_diagram.png)
 
 ![How inequality shocks flatten the income-attitude relationship](outputs/figures/simulation/sim_04_income_attitude_scatter.png)
 
-- **Denmark is the only threshold-crossing case,** reaching majority redistribution support (~3.5) at approximately 15pp Gini increase -- because it starts closest to the threshold, not because it is more sensitive.
+### Trust simulation
 
-The absence of tipping is itself a finding. It indicates that the income x Gini channel alone is insufficient for discontinuous attitude transitions under plausible AI-driven inequality scenarios. Tipping, if it occurs, likely requires additional mechanisms: compounding across multiple attitudinal domains, media framing dynamics, or peer network effects not captured in cross-sectional survey data.
+![Trust equilibria under corruption shocks](outputs/figures/trust/simulation/trust_sim_01_phase_diagram.png)
 
-### Caterpillar Plot: Country Random Intercepts
+![How corruption shocks change the education-trust relationship](outputs/figures/trust/simulation/trust_sim_04_education_trust_scatter.png)
 
-![Country random intercepts](outputs/figures/03_caterpillar_plot.png)
+### Cross-level interactions
 
-### Cross-Level Interaction: Income x Inequality
+![Income x Gini interaction (redistribution)](outputs/figures/03_interaction_income_gini.png)
 
-![Income x Gini interaction](outputs/figures/03_interaction_income_gini.png)
+![Education x Corruption interaction (trust)](outputs/figures/trust/trust_education_corruption_interaction.png)
 
 ## Data
 
@@ -49,23 +44,36 @@ The absence of tipping is itself a finding. It indicates that the income x Gini 
 - **Country-level:** Gini coefficients, GDP per capita, unemployment rates (OECD/World Bank)
 - **Institutional:** EPL, ALMP spending, union density, social spending (OECD/ICTWSS)
 - **AI exposure:** Felten, Raj & Seamans (2021) AIOE scores, aggregated via Eurostat LFS employment weights
+- **Corruption:** Transparency International CPI 2018
 
 ## Methods
 
-Multilevel linear models (individuals nested in countries) estimated via REML using `statsmodels.MixedLM`:
+Multilevel linear models (individuals nested in countries) estimated via REML using `statsmodels.MixedLM`. Two parallel model sequences test different cross-level interactions for each dependent variable:
+
+**Redistribution models (M1-M7, M14-M16):**
 
 | Model | Description |
 |-------|-------------|
-| M1 | Null model (ICC) |
+| M1 | Null model (ICC = 8.0%) |
 | M2 | Individual-level predictors (income, ideology, trust, demographics) |
 | M3 | + Country-level predictors (Gini, GDP, unemployment) |
 | M4 | Random slopes for income |
-| M5 | Cross-level interaction: income x Gini |
+| M5 | Cross-level interaction: income x Gini (p = 0.002) |
 | M6 | Random slopes for ideology |
-| M7 | Cross-level interaction: ideology x Gini |
-| M14 | + AI exposure main effect (null: p = 0.857) |
-| M15 | AI exposure x welfare regime interactions (all null) |
-| M16 | Social exposure composite (null: p = 0.857) |
+| M7 | Cross-level interaction: ideology x Gini (p = 0.024) |
+| M14-16 | AI exposure models (all null) |
+
+**Trust models (T1-T7):**
+
+| Model | Description |
+|-------|-------------|
+| T1 | Null model (ICC = 18.1%) |
+| T2 | Individual predictors (education, income, ideology, demographics) |
+| T3 | + Country-level predictors (Gini, GDP, unemployment, corruption) |
+| T4 | Random slopes for education |
+| T5 | Cross-level interaction: education x corruption (p < 0.001) |
+| T6 | Cross-level interaction: education x Gini (p = 0.045, drops out in full model) |
+| T7 | Full model |
 
 Level-1 predictors are grand-mean centered. Level-2 predictors are z-score standardized.
 
@@ -83,18 +91,20 @@ ess-redistribution-analysis/
 ├── notebooks/
 │   ├── 01_data_exploration.ipynb
 │   ├── 02_data_preparation_clean.ipynb
-│   ├── 03_replication_analysis.ipynb    # Core 7-model sequence
+│   ├── 03_replication_analysis.ipynb    # Core 7-model redistribution sequence
 │   ├── 04_welfare_regime_extension.ipynb
 │   └── 05_ai_exposure_extension.ipynb
-├── simulation/                  # Agent-based Gini shock simulation
-│   ├── config.py                # Loads parameters from empirical models
-│   ├── model.py                 # Country/agent classes, update rule
-│   ├── run_experiments.py       # Shock experiments, batch runs
-│   └── analysis.py              # Result visualization
+├── scripts/
+│   ├── trust_model_analysis.py          # Trust model sequence (T1-T7)
+│   └── alternative_dv_icc_check.py      # ICC comparison across DVs
+├── simulation/
+│   ├── model.py / run_experiments.py    # Redistribution: Gini shock simulation
+│   ├── trust_model.py / trust_experiments.py  # Trust: corruption shock simulation
+│   └── analysis.py / trust_analysis.py  # Visualization for both
 ├── outputs/
-│   ├── figures/                 # All plots (including simulation/)
+│   ├── figures/                 # All plots (simulation/, trust/)
 │   └── tables/                  # Coefficient tables, fit statistics
-└── docs/                        # Methodology, variable codebook
+└── docs/                        # Methodology, variable codebook, findings
 ```
 
 ## Reproduction
@@ -103,6 +113,8 @@ ess-redistribution-analysis/
 2. Install dependencies: `pip install -r requirements.txt`
 3. Download ESS Round 9 data (`ESS9e03_3.dta`) from https://ess.sitehost.iu.edu/ and place in `data/raw/`
 4. Run notebooks in order: 01 -> 02 -> 03 (-> 04 -> 05 optional)
+5. Trust models: `python -m scripts.trust_model_analysis`
+6. Simulations: `python -m simulation.run_experiments` and `python -m simulation.trust_experiments`
 
 No R installation needed - all models use Python's `statsmodels`.
 
