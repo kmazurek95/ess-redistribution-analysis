@@ -1,6 +1,6 @@
 # Methodology Guide
 
-Comprehensive explanation of the multilevel modeling approach, variable transformations, and typology construction methods used in this analysis.
+Explanation of the multilevel modeling approach, variable transformations, and typology construction methods used in this analysis.
 
 ---
 
@@ -25,16 +25,16 @@ Comprehensive explanation of the multilevel modeling approach, variable transfor
 
 Individuals (Level 1) are **nested within countries** (Level 2), violating the independence assumption of standard OLS regression. Multilevel models (also called hierarchical linear models or mixed-effects models) account for this clustering by:
 
-1. **Allowing intercepts to vary by country** — Countries have different baseline levels of redistribution support
-2. **Allowing slopes to vary by country** — The effect of income on redistribution support may differ across countries
-3. **Modeling both levels simultaneously** — Individual characteristics AND country context shape attitudes
+1. **Allowing intercepts to vary by country**  - Countries have different baseline levels of redistribution support
+2. **Allowing slopes to vary by country**  - The effect of income on redistribution support may differ across countries
+3. **Modeling both levels simultaneously**  - Individual characteristics AND country context shape attitudes
 
 ### Key Advantages
 
-- **Correct standard errors** — OLS underestimates SEs when ignoring clustering
-- **Partition variance** — Decompose variance into within-country and between-country components
-- **Test cross-level interactions** — Does country-level inequality moderate individual-level income effects?
-- **Use all data efficiently** — Unlike country fixed effects, multilevel models estimate country-level effects
+- **Correct standard errors**  - OLS underestimates SEs when ignoring clustering
+- **Partition variance**  - Decompose variance into within-country and between-country components
+- **Test cross-level interactions**  - Does country-level inequality moderate individual-level income effects?
+- **Use all data efficiently**  - Unlike country fixed effects, multilevel models estimate country-level effects
 
 ### Mathematical Specification
 
@@ -70,9 +70,9 @@ Where:
 **Formula:** `X_centered = X - mean(X)`
 
 **Why:**
-1. **Interpretability** — Intercept represents outcome for someone at the average of all predictors
-2. **Reduces multicollinearity** — Especially important for interaction terms
-3. **Facilitates comparison** — Centered coefficients are comparable across models
+1. **Interpretability**  - Intercept represents outcome for someone at the average of all predictors
+2. **Reduces multicollinearity**  - Especially important for interaction terms
+3. **Enables comparison**  - Centered coefficients are comparable across models
 
 **Applied to:** Income, political trust, age, education, meritocracy index
 
@@ -91,9 +91,9 @@ Where:
 **Formula:** `X_z = (X - mean(X)) / SD(X)`
 
 **Why:**
-1. **Comparability** — Coefficients represent effect of 1 SD change (standardized effect size)
-2. **Different scales** — Gini (0-100), GDP ($20k-$70k), ALMP (0-2% GDP) → all on same scale
-3. **Interpretability** — Easy to compare relative importance of country-level predictors
+1. **Comparability**  - Coefficients represent effect of 1 SD change (standardized effect size)
+2. **Different scales**  - Gini (0-100), GDP ($20k-$70k), ALMP (0-2% GDP) → all on same scale
+3. **Interpretability**  - Easy to compare relative importance of country-level predictors
 
 **Applied to:** Gini, GDP, unemployment, EPL, ALMP, union density, social spending, AI exposure
 
@@ -120,7 +120,7 @@ Where:
 **Model 1: Null Model**
 - Formula: `Y ~ 1 + (1|country)`
 - Purpose: Calculate ICC (how much variance is between countries?)
-- No predictors — just partition variance
+- No predictors  - just partition variance
 
 **Model 2: Add Income (Level-1)**
 - Formula: `Y ~ income_c + (1|country)`
@@ -212,9 +212,9 @@ Cross-level interactions test whether **Level-2 variables moderate Level-1 relat
 
 ### Interpretation Strategy
 
-1. **Plot the interaction** — Show income slopes at low/medium/high Gini
-2. **Simple slopes analysis** — Test income effect at specific Gini values
-3. **Regions of significance** — At what Gini values is income effect significant?
+1. **Plot the interaction**  - Show income slopes at low/medium/high Gini
+2. **Simple slopes analysis**  - Test income effect at specific Gini values
+3. **Regions of significance**  - At what Gini values is income effect significant?
 
 ### Income × Gini Example
 
@@ -300,7 +300,7 @@ Effect of income = -0.15 + (0.08)(+1) = -0.07  (weak negative effect)
 ### Regime vs. Continuous Indicators
 
 **Tradeoff:**
-- **Regime dummies:** Capture holistic institutional packages, easier interpretation
+- **Regime dummies:** Capture full institutional packages, easier interpretation
 - **Continuous indicators:** More precise, show within-regime variation, avoid arbitrary cutoffs
 
 **Our approach:** Use both
@@ -536,4 +536,4 @@ This framing is more empirically grounded than the direct channel: the simulatio
 ---
 
 **Last Updated:** February 2026
-**For:** ESS Redistribution Analysis — REPAIR PhD Application
+**For:** ESS Redistribution Analysis  - REPAIR PhD Application

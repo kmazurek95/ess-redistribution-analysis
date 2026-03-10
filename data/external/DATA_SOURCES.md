@@ -393,7 +393,7 @@ SI,0.22,0.51,0.38,NA
 
 **Notes:**
 - `social_exposure` column initially NA, will be calculated in analysis
-- AI exposure values are approximate/illustrative — actual data must be obtained from sources
+- AI exposure values are approximate/illustrative  - actual data must be obtained from sources
 - OECD index is standardized (mean≈0, sd≈1)
 - Automation risk is probability scale (0-1)
 
@@ -450,19 +450,19 @@ Download from: https://ess.sitehost.iu.edu/ (same process as Round 9)
 
 | Data Type | OECD Members | EU Non-OECD | Non-EU |
 |-----------|--------------|-------------|--------|
-| ESS | ✓ | ✓ | ✓ |
-| Gini, GDP, Unemployment | ✓ | Partial (Eurostat) | Limited |
-| EPL, ALMP | ✓ | Limited | ✗ |
-| ICTWSS | ✓ | ✓ | Partial |
-| AI Exposure | ✓ | Limited | ✗ |
+| ESS | Yes | Yes | Yes |
+| Gini, GDP, Unemployment | Yes | Partial (Eurostat) | Limited |
+| EPL, ALMP | Yes | Limited | No |
+| ICTWSS | Yes | Yes | Partial |
+| AI Exposure | Yes | Limited | No |
 
 **Countries with likely missing institutional/AI data:**
-- BG (Bulgaria) — EU but recent OECD accession
-- CY (Cyprus) — EU, limited OECD data
-- HR (Croatia) — EU, recent OECD accession
-- IS (Iceland) — OECD but small, some data gaps
-- ME (Montenegro) — Non-EU, non-OECD
-- RS (Serbia) — Non-EU, non-OECD
+- BG (Bulgaria)  - EU but recent OECD accession
+- CY (Cyprus)  - EU, limited OECD data
+- HR (Croatia)  - EU, recent OECD accession
+- IS (Iceland)  - OECD but small, some data gaps
+- ME (Montenegro)  - Non-EU, non-OECD
+- RS (Serbia)  - Non-EU, non-OECD
 
 **Mitigation:** Code handles missing data gracefully; extension analyses can focus on subset with complete institutional data (~20 countries)
 

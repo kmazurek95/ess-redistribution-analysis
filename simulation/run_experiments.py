@@ -1,8 +1,6 @@
 """
-Experiment Runner: Gini Shock Experiments Across Welfare Regime Types
-
-Runs batch simulations for 5 representative countries under varying
-inequality shock magnitudes. Saves results to outputs/simulation_results.json.
+Runs batch Gini shock simulations for 5 representative countries.
+Saves results to outputs/simulation_results.json.
 
 Usage:
     python -m simulation.run_experiments
@@ -15,7 +13,6 @@ from pathlib import Path
 
 import numpy as np
 
-# Ensure project root is on path
 PROJECT_ROOT = Path(__file__).parent.parent
 sys.path.insert(0, str(PROJECT_ROOT))
 
@@ -27,7 +24,6 @@ from simulation.config import (
 from simulation.model import SimulationParams, run_single_experiment
 
 
-# Experiment parameters
 SHOCK_MAGNITUDES = [0.0, 3.0, 5.0, 10.0, 15.0]  # raw Gini points
 N_REPLICATIONS = 50
 N_AGENTS = 1000
@@ -40,7 +36,6 @@ def run_all_experiments() -> dict:
     print("  ESS Redistribution Simulation: Gini Shock Experiments")
     print("=" * 60)
 
-    # Load empirical parameters
     print("\nLoading empirical parameters...")
     config = build_config()
     print(f"  {len(config.country_params)} countries loaded (HU, IT excluded)")
@@ -57,7 +52,6 @@ def run_all_experiments() -> dict:
         noise_scale=0.1,
     )
 
-    # Results structure
     results = {}
     total_runs = len(REPRESENTATIVE_COUNTRIES) * len(SHOCK_MAGNITUDES) * N_REPLICATIONS
     completed = 0
@@ -79,7 +73,6 @@ def run_all_experiments() -> dict:
             "shocks": {},
         }
 
-        # Run baseline first to get reference
         baseline_means = []
 
         for shock in SHOCK_MAGNITUDES:
@@ -94,7 +87,6 @@ def run_all_experiments() -> dict:
                 rep_results.append(result)
                 completed += 1
 
-            # Aggregate across replications
             means = [r["final_mean"] for r in rep_results]
             sds = [r["final_sd"] for r in rep_results]
             pcts = [r["pct_above_threshold"] for r in rep_results]
@@ -113,7 +105,6 @@ def run_all_experiments() -> dict:
                 country_results["baseline_mean"] = agg["mean"]
                 country_results["baseline_pct"] = agg["pct_above_threshold"]
 
-            # Tipping detection (relative to baseline)
             if "baseline_mean" in country_results:
                 shift = agg["mean"] - country_results["baseline_mean"]
                 agg["shift_from_baseline"] = float(shift)
@@ -124,7 +115,6 @@ def run_all_experiments() -> dict:
 
             country_results["shocks"][shock_key] = agg
 
-            # Progress
             elapsed = time.time() - start_time
             pct = completed / total_runs * 100
             print(f"    Shock +{shock:5.1f}pp: mean={agg['mean']:.3f}, "
@@ -168,7 +158,6 @@ def print_summary(output: dict):
     lines.append("  SIMULATION RESULTS SUMMARY")
     lines.append("=" * 60)
 
-    # Baseline equilibria
     lines.append("")
     lines.append("Baseline equilibrium attitudes (mean across 50 replications):")
     for code, r in results.items():
@@ -178,7 +167,6 @@ def print_summary(output: dict):
             f"(Gini = {r['gini_raw']})"
         )
 
-    # Tipping results
     lines.append("")
     lines.append(f"Tipping results (shift > {TIPPING_THRESHOLD} from baseline):")
     for shock in SHOCK_MAGNITUDES:
@@ -195,7 +183,6 @@ def print_summary(output: dict):
         else:
             lines.append(label + "none")
 
-    # Shift details
     lines.append("")
     lines.append("Detailed shifts by shock magnitude:")
     header = f"  {'Country':<6} {'Regime':<28} " + "  ".join(
@@ -213,7 +200,6 @@ def print_summary(output: dict):
             shifts.append(f"{s:+7.3f}")
         lines.append(f"  {code:<6} {r['regime']:<28} {'  '.join(shifts)}")
 
-    # Key finding
     lines.append("")
     max_shift_country = max(
         results.items(),
@@ -232,7 +218,6 @@ def print_summary(output: dict):
         f"({min_shift_country[1]['shocks']['15.0']['shift_from_baseline']:+.3f})."
     )
 
-    # Effect size note
     lines.append("")
     any_tipped = any(
         r["shocks"]["15.0"]["tipped"] for r in results.values()
@@ -266,13 +251,10 @@ def print_summary(output: dict):
 
 def main():
     """Main entry point."""
-    # Run experiments
     results = run_all_experiments()
 
-    # Package output
     output = build_output(results)
 
-    # Save results
     output_dir = PROJECT_ROOT / "outputs"
     output_dir.mkdir(parents=True, exist_ok=True)
 
@@ -281,7 +263,6 @@ def main():
         json.dump(output, f, indent=2)
     print(f"\n  Results saved to: {results_path}")
 
-    # Print and save summary
     summary_text = print_summary(output)
 
     summary_path = output_dir / "simulation_summary.txt"

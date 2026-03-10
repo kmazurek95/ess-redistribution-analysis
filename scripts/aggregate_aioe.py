@@ -1,8 +1,8 @@
 """
 Aggregate Felten et al. (2021) AIOE Scores to Country Level
 
-This script computes country-level AI Occupational Exposure (AIOE) scores
-for ESS Round 9 countries by combining:
+Computes country-level AI Occupational Exposure (AIOE) scores for ESS Round 9
+countries by combining:
   1. Occupation-level AIOE scores (Felten, Raj & Seamans 2021)
   2. A SOC-2010 to ISCO-08 major group crosswalk
   3. Eurostat Labour Force Survey employment shares by ISCO-08 (2018)
@@ -10,9 +10,7 @@ for ESS Round 9 countries by combining:
 Methodology:
   - AIOE scores at SOC 6-digit level are averaged to SOC 2-digit major groups
   - SOC 2-digit groups are mapped to ISCO-08 1-digit major groups
-  - For SOC groups that span two ISCO groups (e.g., SOC 13 Business/Financial
-    maps to both ISCO 2 Professionals and ISCO 3 Technicians), the AIOE score
-    is split equally (50/50 weight)
+  - For SOC groups that span two ISCO groups, the AIOE score is split 50/50
   - Country-level scores are the employment-weighted average of ISCO-level
     AIOE scores, using each country's 2018 occupational composition from
     Eurostat LFS
@@ -50,9 +48,7 @@ sys.path.insert(0, str(PROJECT_ROOT))
 import config
 
 
-# ============================================================
 # SOC 2-digit to ISCO-08 1-digit crosswalk
-# ============================================================
 # Based on BLS/ILO correspondence tables and published literature
 # (Autor & Dorn 2013, Goos et al. 2014, IMF WP/2023/216).
 # Where a SOC group spans two ISCO groups, the weight is split 50/50.
@@ -137,7 +133,7 @@ def fetch_eurostat_employment(cache_path: Path) -> pd.DataFrame:
     n_time = data["size"][-1]
 
     isco_targets = {f"OC{i}": i for i in range(1, 10)}
-    ess_geo = set(config.COUNTRIES) | {"UK"}  # Eurostat uses UK, ESS uses GB
+    ess_geo = set(config.COUNTRIES) | {"UK"}
 
     records = []
     for isco_code, isco_pos in isco_index.items():
@@ -165,7 +161,6 @@ def compute_country_scores(
     isco_aioe: pd.DataFrame, employment: pd.DataFrame
 ) -> pd.DataFrame:
     """Compute employment-weighted country-level AIOE scores."""
-    # Map Eurostat UK -> ESS GB
     employment = employment.copy()
     employment["country"] = employment["geo"].replace({"UK": "GB"})
 
@@ -194,7 +189,6 @@ def main():
     raw_dir = config.EXTERNAL_DATA_DIR / "raw"
     raw_dir.mkdir(parents=True, exist_ok=True)
 
-    # Step 1: Load AIOE
     aioe_path = raw_dir / "AIOE_DataAppendix.xlsx"
     if not aioe_path.exists():
         print(f"\n  ERROR: {aioe_path} not found.")
@@ -204,36 +198,28 @@ def main():
     print("\n[1/4] Loading AIOE occupation-level scores...")
     soc_aioe = load_aioe_scores(aioe_path)
 
-    # Step 2: Crosswalk
     print("\n[2/4] Mapping SOC -> ISCO-08 via crosswalk...")
     isco_aioe = map_soc_to_isco(soc_aioe)
 
-    # Step 3: Eurostat employment
     print("\n[3/4] Loading Eurostat employment data...")
     cache_path = raw_dir / "eurostat_employment_isco08_2018.csv"
     employment = fetch_eurostat_employment(cache_path)
 
-    # Step 4: Aggregate
     print("\n[4/4] Computing country-level scores...")
     scores = compute_country_scores(isco_aioe, employment)
 
-    # Map Felten AIOE to ai_exposure_oecd column (used by models in src/models.py)
-    # This is the project's primary AI exposure measure; the column name is
-    # retained for pipeline compatibility with data_prep.py and models.py.
+    # ai_exposure_oecd column name retained for pipeline compatibility
     scores["ai_exposure_oecd"] = scores["ai_exposure_felten"]
-    scores["automation_risk"] = np.nan  # Placeholder for Frey & Osborne
-    scores["social_exposure"] = np.nan  # Computed in notebook 05
+    scores["automation_risk"] = np.nan
+    scores["social_exposure"] = np.nan
 
-    # Reorder to match pipeline expectations (data_loader.py)
     scores = scores[["country", "ai_exposure_oecd", "automation_risk",
                       "ai_exposure_felten", "social_exposure"]]
 
-    # Save
     output_path = config.AI_EXPOSURE_FILE
     scores.to_csv(output_path, index=False)
     print(f"\n  Saved to {output_path}")
 
-    # Summary
     print(f"\n{'='*60}")
     print(f"  Results: {len(scores)} countries")
     print(f"  Range: {scores['ai_exposure_felten'].min():.4f} "
@@ -242,7 +228,6 @@ def main():
     print(f"  SD:    {scores['ai_exposure_felten'].std():.4f}")
     print(f"{'='*60}")
 
-    # Print ranking
     print(f"\n  {'Country':<6} {'AIOE':>8}")
     print(f"  {'-'*14}")
     for _, row in scores.sort_values("ai_exposure_felten", ascending=False).iterrows():

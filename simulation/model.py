@@ -1,11 +1,9 @@
 """
-Agent-Based Model: Redistribution Attitude Dynamics Under Inequality Shocks
+Agent-based model for redistribution attitude dynamics under inequality shocks.
 
 Uses empirical regression coefficients from ESS Round 9 multilevel models
 to simulate how exogenous Gini shocks affect redistribution attitude equilibria
-across welfare regime types.
-
-Pure numpy implementation (no Mesa dependency).
+across welfare regime types. Pure numpy implementation.
 """
 
 import numpy as np
@@ -54,7 +52,6 @@ class Country:
         self.sim_params = sim_params
         self.rng = rng
 
-        # Fixed effects shorthand
         fe = config.fixed_effects
         self.beta_intercept = fe["Intercept"]
         self.beta_income = fe["income_c"]
@@ -71,22 +68,19 @@ class Country:
 
         self.residual_sd = np.sqrt(config.residual_variance)
 
-        # Initialize agents
         n = sim_params.n_agents
         self._init_agents(n)
 
     def _init_agents(self, n: int):
         """Initialize agent attribute arrays from plausible distributions."""
-        # Income: centered (mean 0), spread scaled by Gini.
         # Higher Gini -> wider income spread. SD ~ 2.5 for average Gini,
         # scaled by (1 + 0.3 * gini_z) to reflect inequality.
         income_sd = 2.5 * (1.0 + 0.3 * self.gini_z)
         self.income = self.rng.normal(0.0, max(income_sd, 0.5), size=n)
 
-        # Ideology: centered, SD ~ 2.0 (ESS lrscale 0-10, centered ~ SD 2)
+        # ESS lrscale 0-10, centered ~ SD 2
         self.ideology = self.rng.normal(0.0, 2.0, size=n)
 
-        # Demographics (centered): education, age, trust, meritocracy
         self.education = self.rng.normal(0.0, 3.5, size=n)
         self.age = self.rng.normal(0.0, 17.0, size=n)
         self.female = self.rng.binomial(1, 0.52, size=n).astype(float)
@@ -94,12 +88,11 @@ class Country:
         self.trust = self.rng.normal(0.0, 2.5, size=n)
         self.meritocracy = self.rng.normal(0.0, 0.8, size=n)
 
-        # Initialize attitudes from the empirical model prediction
         self.attitude = self._compute_predicted_attitude()
         self.attitude = np.clip(self.attitude, 1.0, 5.0)
 
     def _compute_predicted_attitude(self) -> np.ndarray:
-        """Compute predicted attitude from the regression equation."""
+        """Predicted attitude from the regression equation."""
         pred = (
             self.beta_intercept
             + self.random_intercept
@@ -118,31 +111,24 @@ class Country:
         return pred
 
     def step(self) -> float:
-        """
-        One simulation timestep: recompute attitudes from regression model
-        with current Gini, then apply social influence.
-
-        Returns the mean attitude after this step.
-        """
+        """One timestep: recompute attitudes from regression + social influence."""
         n = self.sim_params.n_agents
         sp = self.sim_params
 
-        # 1. Predicted attitude from regression model (with current Gini)
         predicted = self._compute_predicted_attitude()
 
-        # Add small stochastic perturbation
         noise = self.rng.normal(0.0, self.residual_sd * sp.noise_scale, size=n)
         predicted = predicted + noise
 
-        # 2. Social influence (Granovetter threshold logic)
-        # Each agent observes K random neighbors
+        # Social influence (Granovetter threshold logic):
+        # each agent observes K random neighbors
         neighbor_means = np.empty(n)
         for i in range(n):
             neighbor_idx = self.rng.choice(n, size=sp.n_neighbors, replace=False)
             neighbor_means[i] = self.attitude[neighbor_idx].mean()
 
-        # Agents whose neighbors exceed the majority threshold shift toward
-        # the neighbor mean; otherwise no social influence shift
+        # Agents shift toward neighbor mean only when neighbors
+        # exceed the majority threshold
         above_threshold = neighbor_means >= sp.majority_threshold
         social_shift = np.where(
             above_threshold,
@@ -150,24 +136,15 @@ class Country:
             0.0,
         )
 
-        # 3. Update attitudes
         self.attitude = predicted + social_shift
         self.attitude = np.clip(self.attitude, 1.0, 5.0)
 
         return float(self.attitude.mean())
 
     def apply_gini_shock(self, raw_shock: float, config: SimulationConfig):
-        """
-        Apply an exogenous Gini increase.
-
-        Args:
-            raw_shock: increase in raw Gini points (e.g., 0.05 = 5pp)
-            config: SimulationConfig with gini_mean/gini_sd for z-scoring
-        """
-        # Update raw Gini
+        """Apply an exogenous Gini increase (raw_shock in Gini points, e.g. 0.05 = 5pp)."""
         self.gini_raw = self.gini_raw + raw_shock
 
-        # Recompute z-score using original distribution parameters
         if config.gini_sd > 0:
             self.gini_z = (self.gini_raw - config.gini_mean) / config.gini_sd
         else:
@@ -179,7 +156,6 @@ class Country:
         p75 = np.percentile(self.income, 75)
         middle_mask = (self.income >= p25) & (self.income <= p75)
 
-        # Randomly select 20% of middle-income agents
         middle_indices = np.where(middle_mask)[0]
         n_to_shift = int(0.2 * len(middle_indices))
         if n_to_shift > 0:
@@ -190,12 +166,7 @@ class Country:
             self.income[shift_indices] -= 0.5 * income_sd
 
     def run_to_convergence(self) -> Tuple[float, int, list]:
-        """
-        Run simulation until convergence or max timesteps.
-
-        Returns:
-            (final_mean_attitude, n_steps, trajectory)
-        """
+        """Run until convergence or max timesteps. Returns (final_mean, n_steps, trajectory)."""
         sp = self.sim_params
         trajectory = [float(self.attitude.mean())]
 
@@ -203,7 +174,6 @@ class Country:
             mean_att = self.step()
             trajectory.append(mean_att)
 
-            # Check convergence
             if len(trajectory) >= 2:
                 delta = abs(trajectory[-1] - trajectory[-2])
                 if delta < sp.convergence_threshold:
@@ -212,7 +182,7 @@ class Country:
         return trajectory[-1], len(trajectory) - 1, trajectory
 
     def get_summary(self) -> dict:
-        """Return summary statistics of current state."""
+        """Summary statistics of current state."""
         return {
             "mean_attitude": float(self.attitude.mean()),
             "sd_attitude": float(self.attitude.std()),
@@ -231,22 +201,9 @@ def run_single_experiment(
     sim_params: SimulationParams,
     seed: int,
 ) -> dict:
-    """
-    Run a single country + shock experiment.
-
-    Args:
-        country_code: ISO2 country code
-        shock_magnitude: raw Gini increase (0 = baseline)
-        config: SimulationConfig
-        sim_params: SimulationParams
-        seed: random seed for this run
-
-    Returns:
-        dict with results
-    """
+    """Run a single country + shock experiment and return results dict."""
     rng = np.random.default_rng(seed)
 
-    # Create a fresh SimulationParams with the specific seed
     sp = SimulationParams(
         n_agents=sim_params.n_agents,
         max_timesteps=sim_params.max_timesteps,
@@ -261,11 +218,9 @@ def run_single_experiment(
     country_params = config.country_params[country_code]
     country = Country(country_code, country_params, config, sp, rng)
 
-    # Apply shock if nonzero
     if shock_magnitude > 0:
         country.apply_gini_shock(shock_magnitude, config)
 
-    # Run to convergence
     final_mean, n_steps, trajectory = country.run_to_convergence()
     summary = country.get_summary()
 

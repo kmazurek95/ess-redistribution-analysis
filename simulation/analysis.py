@@ -1,7 +1,5 @@
 """
-Simulation Analysis: Phase Diagrams, Tipping Thresholds, Regime Comparisons
-
-Generates publication-quality figures from simulation results.
+Generates figures from simulation results.
 Saves to outputs/figures/simulation/.
 
 Usage:
@@ -22,7 +20,6 @@ sys.path.insert(0, str(PROJECT_ROOT))
 
 from simulation.config import REGIME_COLORS, REPRESENTATIVE_COUNTRIES
 
-# Output directory
 FIGURE_DIR = PROJECT_ROOT / "outputs" / "figures" / "simulation"
 
 
@@ -34,7 +31,7 @@ def load_results() -> dict:
 
 
 def setup_style():
-    """Configure matplotlib for clean publication-quality plots."""
+    """Configure matplotlib for clean plots."""
     plt.rcParams.update({
         "font.size": 11,
         "axes.titlesize": 13,
@@ -52,10 +49,7 @@ def setup_style():
 
 
 def figure_1_phase_diagram(data: dict):
-    """
-    Phase diagram: equilibrium mean attitude vs. shock magnitude,
-    one line per country colored by regime.
-    """
+    """Equilibrium mean attitude vs. shock magnitude, one line per country."""
     results = data["results"]
     shocks = data["metadata"]["shock_magnitudes_gini_points"]
 
@@ -79,7 +73,6 @@ def figure_1_phase_diagram(data: dict):
                 label=f"{code} ({regime})")
         ax.fill_between(shocks, means - sds, means + sds, color=color, alpha=0.15)
 
-    # Majority threshold line
     ax.axhline(y=3.5, color="#999999", linestyle="--", linewidth=1, alpha=0.7)
     ax.text(shocks[-1] + 0.3, 3.5, "Majority\nthreshold",
             fontsize=8, color="#999999", va="center")
@@ -98,32 +91,26 @@ def figure_1_phase_diagram(data: dict):
 
 
 def figure_2_regime_comparison(data: dict):
-    """
-    Panel of 5 histograms showing attitude distributions at baseline vs. 10pp shock.
-    """
+    """Attitude distributions at baseline vs. 10pp shock, one panel per country."""
     results = data["results"]
     countries = list(results.keys())
 
     fig, axes = plt.subplots(1, len(countries), figsize=(16, 3.5), sharey=True)
 
-    # We need to re-run the simulation briefly to get distributions.
-    # Instead, use the summary statistics to draw approximate normal distributions.
+    # Using summary stats to draw approximate normal distributions
     for i, code in enumerate(countries):
         ax = axes[i]
         r = results[code]
         regime = r["regime"]
         color = REGIME_COLORS.get(regime, "#333333")
 
-        # Baseline distribution (approximate from mean and SD)
         base_mean = r["shocks"]["0.0"]["mean"]
         base_sd = r["shocks"]["0.0"]["mean_within_sd"]
 
-        # 10pp shock distribution
         shock_key = "10.0"
         shock_mean = r["shocks"][shock_key]["mean"]
         shock_sd = r["shocks"][shock_key]["mean_within_sd"]
 
-        # Generate approximate distributions for visualization
         x = np.linspace(1, 5, 200)
 
         base_dist = np.exp(-0.5 * ((x - base_mean) / max(base_sd, 0.1)) ** 2)
@@ -137,7 +124,6 @@ def figure_2_regime_comparison(data: dict):
         ax.plot(x, base_dist, color="#888888", linewidth=1)
         ax.plot(x, shock_dist, color=color, linewidth=1.5)
 
-        # Vertical lines at means
         ax.axvline(base_mean, color="#888888", linestyle=":", linewidth=1)
         ax.axvline(shock_mean, color=color, linestyle="--", linewidth=1.2)
 
@@ -160,13 +146,10 @@ def figure_2_regime_comparison(data: dict):
 
 
 def figure_3_tipping_heatmap(data: dict):
-    """
-    Heatmap: initial Gini (x) vs. shock magnitude (y), colored by shift magnitude.
-    """
+    """Heatmap of shift magnitude by initial Gini vs. shock size."""
     results = data["results"]
     shocks = [s for s in data["metadata"]["shock_magnitudes_gini_points"] if s > 0]
 
-    # Sort countries by initial Gini
     sorted_countries = sorted(
         results.items(), key=lambda x: x[1]["gini_raw"]
     )
@@ -174,7 +157,6 @@ def figure_3_tipping_heatmap(data: dict):
     gini_values = [c[1]["gini_raw"] for c in sorted_countries]
     regimes = [c[1]["regime"] for c in sorted_countries]
 
-    # Build shift matrix
     shift_matrix = np.zeros((len(shocks), len(country_codes)))
     for j, (code, r) in enumerate(sorted_countries):
         for i, shock in enumerate(shocks):
@@ -188,7 +170,6 @@ def figure_3_tipping_heatmap(data: dict):
         interpolation="nearest"
     )
 
-    # Labels
     ax.set_xticks(range(len(country_codes)))
     ax.set_xticklabels(
         [f"{code}\n({gini:.0f})" for code, gini in zip(country_codes, gini_values)],
@@ -200,7 +181,6 @@ def figure_3_tipping_heatmap(data: dict):
     ax.set_ylabel("Shock Magnitude")
     ax.set_title("Tipping Vulnerability by Initial Inequality Level")
 
-    # Annotate cells with shift values
     for i in range(len(shocks)):
         for j in range(len(country_codes)):
             val = shift_matrix[i, j]
@@ -208,7 +188,6 @@ def figure_3_tipping_heatmap(data: dict):
             ax.text(j, i, f"{val:+.2f}", ha="center", va="center",
                     fontsize=8, color=text_color)
 
-    # Tipping threshold marker
     tipping = data["metadata"]["tipping_threshold"]
     for i in range(len(shocks)):
         for j in range(len(country_codes)):
@@ -225,18 +204,14 @@ def figure_3_tipping_heatmap(data: dict):
 
 
 def figure_4_income_attitude_scatter(data: dict):
-    """
-    For the most vulnerable country, show income vs. attitude at baseline
-    and after 10pp shock, with regression lines.
-    """
-    # Re-run simulation for the most-shifted country to get agent-level data
+    """Income vs. attitude at baseline and after 10pp shock for the most shifted country."""
     from simulation.config import build_config
     from simulation.model import Country, SimulationParams
 
     config = build_config()
     results = data["results"]
 
-    # Find most vulnerable country (largest absolute shift at 10pp)
+    # Find country with the largest absolute shift at 10pp
     target_code = max(
         results.items(),
         key=lambda x: abs(x[1]["shocks"]["10.0"]["shift_from_baseline"])
@@ -252,7 +227,6 @@ def figure_4_income_attitude_scatter(data: dict):
         noise_scale=0.1,
     )
 
-    # Baseline run
     rng_base = np.random.default_rng(42)
     country_base = Country(
         target_code, config.country_params[target_code],
@@ -262,7 +236,6 @@ def figure_4_income_attitude_scatter(data: dict):
     income_base = country_base.income.copy()
     attitude_base = country_base.attitude.copy()
 
-    # Shocked run
     rng_shock = np.random.default_rng(42)
     country_shock = Country(
         target_code, config.country_params[target_code],
@@ -278,13 +251,11 @@ def figure_4_income_attitude_scatter(data: dict):
 
     fig, ax = plt.subplots(figsize=(8, 6))
 
-    # Scatter: baseline (light) and shock (dark)
     ax.scatter(income_base, attitude_base, alpha=0.08, s=8,
                color="#aaaaaa", label="Baseline", rasterized=True)
     ax.scatter(income_shock, attitude_shock, alpha=0.12, s=8,
                color=color, label="+10pp Gini shock", rasterized=True)
 
-    # Regression lines
     def add_regression_line(x, y, color, linestyle, label):
         mask = np.isfinite(x) & np.isfinite(y)
         if mask.sum() < 10:

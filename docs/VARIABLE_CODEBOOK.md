@@ -1,4 +1,4 @@
-# Variable Codebook — ESS Redistribution Analysis
+# Variable Codebook  - ESS Redistribution Analysis
 
 Complete reference for all variables used in the analysis.
 
@@ -20,7 +20,7 @@ Complete reference for all variables used in the analysis.
 
 ### Outcome Variable
 
-**`gincdif` — Support for Government Redistribution**
+**`gincdif`  - Support for Government Redistribution**
 - **ESS Question:** "To what extent do you agree or disagree: The government should take measures to reduce differences in income levels?"
 - **Scale:** 1 (Agree strongly) to 5 (Disagree strongly)
 - **Recoded as:** `redist_support` (reversed: 1 = Disagree strongly, 5 = Agree strongly)
@@ -32,7 +32,7 @@ Complete reference for all variables used in the analysis.
 
 ### Level-1 Predictors (Individual Characteristics)
 
-**`hinctnta` — Household Income (Deciles)**
+**`hinctnta`  - Household Income (Deciles)**
 - **ESS Question:** Household's total net income from all sources (country-specific deciles)
 - **Scale:** 1 (Lowest decile) to 10 (Highest decile)
 - **Variable name:** `income`
@@ -40,7 +40,7 @@ Complete reference for all variables used in the analysis.
 - **Missing codes:** 77, 88, 99
 - **Expected effect:** Higher income → less support for redistribution (self-interest hypothesis)
 
-**`eduyrs` — Years of Full-Time Education**
+**`eduyrs`  - Years of Full-Time Education**
 - **ESS Question:** "How many years of full-time education have you completed?"
 - **Scale:** Continuous (0-25+)
 - **Variable name:** `education`
@@ -48,7 +48,7 @@ Complete reference for all variables used in the analysis.
 - **Missing codes:** 77, 88, 99
 - **Expected effect:** Ambiguous (education can increase both efficiency concerns and egalitarian values)
 
-**`agea` — Age**
+**`agea`  - Age**
 - **ESS Question:** "What year were you born?"
 - **Scale:** Continuous (15-100+)
 - **Variable name:** `age`
@@ -56,21 +56,21 @@ Complete reference for all variables used in the analysis.
 - **Missing codes:** 999
 - **Expected effect:** Mixed (older → more redistribution support due to welfare dependence, but age-cohort effects vary)
 
-**`gndr` — Gender**
+**`gndr`  - Gender**
 - **ESS Question:** Coded by interviewer
 - **Scale:** 1 (Male), 2 (Female)
 - **Recoded as:** `female` (0 = Male, 1 = Female)
 - **Missing codes:** 9
 - **Expected effect:** Women → more redistribution support (welfare state reliance)
 
-**`emplrel` — Employment Status**
+**`emplrel`  - Employment Status**
 - **ESS Question:** "Are you currently in paid work?"
 - **Scale:** 1 (Employee), 2 (Self-employed), 3+ (Other)
 - **Recoded as:** `employed` (0 = Not employed/other, 1 = Employed)
 - **Missing codes:** 6, 7, 8, 9
 - **Expected effect:** Employed → less redistribution support (labor market insider status)
 
-**`lrscale` — Left-Right Self-Placement**
+**`lrscale`  - Left-Right Self-Placement**
 - **ESS Question:** "In politics people sometimes talk of 'left' and 'right'. Where would you place yourself?"
 - **Scale:** 0 (Left) to 10 (Right)
 - **Variable name:** `ideology`
@@ -78,7 +78,7 @@ Complete reference for all variables used in the analysis.
 - **Missing codes:** 77, 88, 99
 - **Expected effect:** Higher (right-wing) → less redistribution support
 
-**`trstprl` — Trust in National Parliament**
+**`trstprl`  - Trust in National Parliament**
 - **ESS Question:** "On a scale of 0-10, how much do you trust your country's parliament?"
 - **Scale:** 0 (No trust at all) to 10 (Complete trust)
 - **Variable name:** `political_trust`
@@ -86,14 +86,14 @@ Complete reference for all variables used in the analysis.
 - **Missing codes:** 77, 88, 99
 - **Expected effect:** Higher trust → more redistribution support (confidence in government effectiveness)
 
-**`dfincac` — Perceived Meritocracy (Hard Work)**
+**`dfincac`  - Perceived Meritocracy (Hard Work)**
 - **ESS Question:** "Some people say that getting ahead depends on hard work and effort. Others say it depends on luck and connections. Where would you place yourself?"
 - **Scale:** 1 (Hard work determines) to 5 (Luck/connections determine)
 - **Variable name:** `merit_effort`
 - **Missing codes:** 7, 8, 9
 - **Expected effect:** Meritocratic beliefs → less redistribution support
 
-**`smdfslv` — Perceived Deservingness**
+**`smdfslv`  - Perceived Deservingness**
 - **ESS Question:** "A person is deserving if they work hard, even if their efforts don't always succeed"
 - **Scale:** 1 (Agree strongly) to 5 (Disagree strongly)
 - **Variable name:** `merit_deserve`
@@ -104,7 +104,7 @@ Complete reference for all variables used in the analysis.
 
 ## Country-Level Economic Indicators
 
-**`gini` — Gini Coefficient (Income Inequality)**
+**`gini`  - Gini Coefficient (Income Inequality)**
 - **Source:** World Bank / OECD Income Distribution Database
 - **Definition:** Gini coefficient of disposable income (post-tax, post-transfer)
 - **Scale:** 0 (perfect equality) to 100 (perfect inequality)
@@ -114,7 +114,7 @@ Complete reference for all variables used in the analysis.
 - **Expected effect:** Higher inequality → more redistribution support (inequality breeds demand)
 - **Alternative hypothesis:** Higher inequality → less redistribution support (power resources theory)
 
-**`gdp_per_capita` — GDP per Capita (PPP)**
+**`gdp_per_capita`  - GDP per Capita (PPP)**
 - **Source:** World Bank / OECD National Accounts
 - **Definition:** Gross Domestic Product per capita, purchasing power parity (constant 2017 international $)
 - **Scale:** Continuous (USD, thousands)
@@ -123,7 +123,7 @@ Complete reference for all variables used in the analysis.
 - **Coverage:** All 28 ESS countries
 - **Expected effect:** Higher GDP → less redistribution support (affluence reduces welfare demand)
 
-**`unemployment_rate` — Unemployment Rate**
+**`unemployment_rate`  - Unemployment Rate**
 - **Source:** World Bank / OECD Labour Force Statistics
 - **Definition:** Unemployment as % of total labor force (ILO definition)
 - **Scale:** Continuous (0-30%)
@@ -138,7 +138,7 @@ Complete reference for all variables used in the analysis.
 
 ### Labor Market Institutions
 
-**`epl_regular` — Employment Protection Legislation (Regular Contracts)**
+**`epl_regular`  - Employment Protection Legislation (Regular Contracts)**
 - **Source:** OECD Employment Protection Database
 - **Definition:** Index of strictness of employment protection for regular (permanent) workers
 - **Scale:** 0 (least restrictive) to 6 (most restrictive)
@@ -147,7 +147,7 @@ Complete reference for all variables used in the analysis.
 - **Coverage:** OECD members only (21 of 28 countries)
 - **Expected effect:** Higher EPL → less redistribution support (labor market protection substitutes for welfare)
 
-**`epl_temporary` — Employment Protection Legislation (Temporary Contracts)**
+**`epl_temporary`  - Employment Protection Legislation (Temporary Contracts)**
 - **Source:** OECD Employment Protection Database
 - **Definition:** Index of regulation of temporary work (fixed-term contracts, TWA)
 - **Scale:** 0 (least restrictive) to 6 (most restrictive)
@@ -156,7 +156,7 @@ Complete reference for all variables used in the analysis.
 - **Coverage:** OECD members only
 - **Expected effect:** Higher EPL temp → dualization effects (insiders vs outsiders)
 
-**`almp_spending` — Active Labor Market Policy Spending**
+**`almp_spending`  - Active Labor Market Policy Spending**
 - **Source:** OECD Social Expenditure Database (SOCX)
 - **Definition:** Public spending on active labor market programs (training, job creation, etc.) as % of GDP
 - **Scale:** Continuous (0-2%)
@@ -165,7 +165,7 @@ Complete reference for all variables used in the analysis.
 - **Coverage:** OECD members only
 - **Expected effect:** Higher ALMP → more redistribution support (complementarity with welfare state)
 
-**`union_density` — Trade Union Density**
+**`union_density`  - Trade Union Density**
 - **Source:** ICTWSS Database (Amsterdam Institute for Advanced Labour Studies)
 - **Definition:** Net union membership as % of wage/salary earners in employment
 - **Scale:** Continuous (0-100%)
@@ -174,7 +174,7 @@ Complete reference for all variables used in the analysis.
 - **Coverage:** 27 of 28 countries (Iceland may have gaps)
 - **Expected effect:** Higher density → more redistribution support (collective action capacity)
 
-**`bargaining_coverage` — Collective Bargaining Coverage**
+**`bargaining_coverage`  - Collective Bargaining Coverage**
 - **Source:** ICTWSS Database
 - **Definition:** Adjusted collective bargaining coverage (% of employees covered)
 - **Scale:** Continuous (0-100%)
@@ -185,7 +185,7 @@ Complete reference for all variables used in the analysis.
 
 ### Welfare State Spending
 
-**`social_spending` — Social Expenditure (% GDP)**
+**`social_spending`  - Social Expenditure (% GDP)**
 - **Source:** OECD Social Expenditure Database (SOCX)
 - **Definition:** Total public social expenditure as % of GDP (old age, incapacity, health, family, unemployment, housing, other)
 - **Scale:** Continuous (10-30%)
@@ -198,7 +198,7 @@ Complete reference for all variables used in the analysis.
 
 ## AI/Automation Exposure Variables
 
-**`ai_exposure_oecd` — AI Occupational Exposure (Felten AIOE)**
+**`ai_exposure_oecd`  - AI Occupational Exposure (Felten AIOE)**
 - **Source:** Felten, Raj & Seamans (2021), aggregated via `scripts/aggregate_aioe.py`
 - **Definition:** Country-level AIOE score based on occupational task overlap with AI capabilities, weighted by Eurostat LFS 2018 employment shares
 - **Scale:** Continuous (standardized)
@@ -208,20 +208,20 @@ Complete reference for all variables used in the analysis.
 - **Empirical result:** No significant effect on redistribution preferences (p = 0.857)
 - **Note:** Column name retained for pipeline compatibility. Positive values = higher cognitive/professional AI exposure. Service economies (GB, CH, NO) score highest.
 
-**`automation_risk` — Frey & Osborne Automation Risk**
+**`automation_risk`  - Frey & Osborne Automation Risk**
 - **Source:** Frey & Osborne (2017) probabilities aggregated via Eurostat LFS
 - **Definition:** Weighted average of occupation-level automation probabilities, weighted by country employment shares
 - **Scale:** Continuous (0-1, often expressed as %)
 - **Year:** 2018 employment structure
 - **Standardization:** Z-score → `automation_risk_z`
-- **Coverage:** Not yet computed — column contains NaN placeholder values
+- **Coverage:** Not yet computed  - column contains NaN placeholder values
 - **Status:** Placeholder for future extension
 - **Calculation:**
   ```
   automation_risk_c = Σ(P(automation)_occ × employment_share_occ)
   ```
 
-**`ai_exposure_felten` — Felten et al. AI Exposure Index (Optional)**
+**`ai_exposure_felten`  - Felten et al. AI Exposure Index (Optional)**
 - **Source:** Felten, Raj & Seamans (2021) aggregated to country level
 - **Definition:** AI exposure based on detailed task-technology mapping
 - **Scale:** Continuous (standardized)
@@ -232,7 +232,7 @@ Complete reference for all variables used in the analysis.
 
 ### Composite Measures
 
-**`social_exposure` — Social Exposure to AI/Automation**
+**`social_exposure`  - Social Exposure to AI/Automation**
 - **Definition:** Interaction of technical AI exposure × institutional weakness
 - **Formula:**
   ```
@@ -247,7 +247,7 @@ Complete reference for all variables used in the analysis.
 
 ### Meritocracy Index
 
-**`meritocracy_index` — Composite Meritocratic Beliefs**
+**`meritocracy_index`  - Composite Meritocratic Beliefs**
 - **Formula:** `(merit_effort + merit_deserve) / 2`
 - **Components:**
   - `merit_effort` (dfincac): Hard work determines success

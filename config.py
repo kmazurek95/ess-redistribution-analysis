@@ -1,9 +1,4 @@
-"""
-Configuration file for ESS Redistribution Analysis Project
-
-This module contains all configuration settings, variable mappings, regime classifications,
-and data source specifications for the analysis.
-"""
+"""Configuration: paths, variable mappings, regime classifications, data sources."""
 
 from pathlib import Path
 from typing import Dict, List

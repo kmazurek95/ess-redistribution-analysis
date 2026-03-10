@@ -23,7 +23,7 @@ Generated: 2026-03-06
 
 ## MODEL RESULTS
 
-### Core Replication (Notebook 03) — UNCHANGED
+### Core Replication (Notebook 03)  - UNCHANGED
 
 All 7 models have outputs. Results match exactly across re-estimation.
 
@@ -34,7 +34,7 @@ All 7 models have outputs. Results match exactly across re-estimation.
 | N individuals | 31,393 |
 | N countries | 26 |
 
-**Key Fixed Effects (Model 7 — final model):**
+**Key Fixed Effects (Model 7  - final model):**
 
 | Predictor | Coef | SE | p-value | Sig |
 |-----------|------|-----|---------|-----|
@@ -82,7 +82,7 @@ All 7 models have outputs. Results match exactly across re-estimation.
 
 Note: AIC/BIC not available (statsmodels does not compute these for REML-estimated models).
 
-### AI Exposure Extension (Notebook 05) — RE-RUN WITH NEW DATA
+### AI Exposure Extension (Notebook 05)  - RE-RUN WITH NEW DATA
 
 All three models converged. No convergence warnings (Model 15 converged cleanly this time, unlike the old run).
 
@@ -96,7 +96,7 @@ All three models converged. No convergence warnings (Model 15 converged cleanly 
 
 **Interpretation:** AI exposure (Felten AIOE) does not significantly predict redistribution preferences at the country level. Direction is slightly negative (higher AI exposure = marginally less redistribution support), opposite to the technological threat hypothesis. No regime interactions are significant.
 
-**What changed from old data:** The country rankings reversed entirely. Old data: Post-Communist highest exposure, Social Democratic lowest. New data: Liberal (1.21) > Social Democratic (0.99) > Conservative (0.72) > Mediterranean (-0.53) > Post-Communist (-0.78). This is substantively correct — Felten AIOE measures cognitive/professional AI exposure, not manufacturing automation risk.
+**What changed from old data:** The country rankings reversed entirely. Old data: Post-Communist highest exposure, Social Democratic lowest. New data: Liberal (1.21) > Social Democratic (0.99) > Conservative (0.72) > Mediterranean (-0.53) > Post-Communist (-0.78). This is substantively correct  - Felten AIOE measures cognitive/professional AI exposure, not manufacturing automation risk.
 
 **Country-level correlation:** AI exposure x redistribution support: r = 0.285 (weak positive, not significant).
 
@@ -135,8 +135,8 @@ All three models converged. No convergence warnings (Model 15 converged cleanly 
 | Check | Status |
 |-------|--------|
 | Placeholder text (`[Your Name]`, etc.) | 0 found |
-| TODO items | 3 (all in OECD API stub in `scripts/fetch_oecd_data.py`) |
-| Junk files | 1 (`analysis.log` — harmless log file) |
+| TODO items | 0 |
+| Junk files | 1 (`analysis.log`  - harmless log file) |
 | README | 87 lines, leads with findings |
 | `docs/DATA_SOURCES.md` | Verified provenance version (106 lines) |
 | `PHASE_1_COMPLETE.md` | Deleted |
@@ -176,7 +176,7 @@ All three models converged. No convergence warnings (Model 15 converged cleanly 
 
 1. **IS (Iceland) has no welfare regime assignment.** Typically Social Democratic but not assigned in `config.py`. The simulation will need to handle this (assign it manually or exclude it).
 
-2. **HU and IT excluded from model** — no random intercepts for these countries. If the simulation needs all 28 countries, you'll need to decide how to handle these (use regime-average intercepts, or restrict to 26 countries).
+2. **HU and IT excluded from model**  - no random intercepts for these countries. If the simulation needs all 28 countries, you'll need to decide how to handle these (use regime-average intercepts, or restrict to 26 countries).
 
 3. **AIC/BIC unavailable.** statsmodels MixedLM does not compute AIC/BIC for REML-estimated models. Log-likelihood is available. If AIC/BIC are needed, re-estimate with ML instead of REML (produces slightly different variance estimates).
 
@@ -188,12 +188,12 @@ None of these are hard blockers for starting the simulation build.
 
 ## RECOMMENDED ACTIONS BEFORE SIMULATION WEEK
 
-1. **Decide on IS regime assignment** — add `"IS": "Social Democratic"` to config.py WELFARE_REGIMES_ESPING, or document the exclusion.
+1. **Decide on IS regime assignment**  - add `"IS": "Social Democratic"` to config.py WELFARE_REGIMES_ESPING, or document the exclusion.
 
-2. **Decide on HU/IT handling** — assign regime-average random intercepts, or restrict the simulation to 26 countries.
+2. **Decide on HU/IT handling**  - assign regime-average random intercepts, or restrict the simulation to 26 countries.
 
-3. **Consider deleting `analysis.log`** — harmless but unnecessary.
+3. **Consider deleting `analysis.log`**  - harmless but unnecessary.
 
-4. **Update README line 30** — currently says "OECD AI exposure index, Frey & Osborne automation risk" which should say "Felten, Raj & Seamans (2021) AIOE scores" to reflect actual data.
+4. **Update README line 30**  - currently says "OECD AI exposure index, Frey & Osborne automation risk" which should say "Felten, Raj & Seamans (2021) AIOE scores" to reflect actual data.
 
-5. **Optionally update `docs/SUMMARY_FINDINGS.md`** — notebook 05 results are now finalized (AI exposure NOT significant with real data). The summary already flagged results as stale; can now be updated with the actual null finding.
+5. **Optionally update `docs/SUMMARY_FINDINGS.md`**  - notebook 05 results are now finalized (AI exposure NOT significant with real data). The summary already flagged results as stale; can now be updated with the actual null finding.
