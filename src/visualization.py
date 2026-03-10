@@ -212,10 +212,14 @@ def plot_by_regime(df, outcome, regime_var="welfare_regime", plot_type="violin",
     fig, ax = plt.subplots(figsize=figsize)
     plot_data = df[df[regime_var].notna()]
 
+    # Use REGIME_COLORS only if keys match the data; otherwise fall back to Set2
+    regime_vals = set(plot_data[regime_var].unique())
+    palette = config.REGIME_COLORS if regime_vals.issubset(config.REGIME_COLORS) else "Set2"
+
     if plot_type == "violin":
-        sns.violinplot(data=plot_data, x=regime_var, y=outcome, palette=config.REGIME_COLORS, ax=ax)
+        sns.violinplot(data=plot_data, x=regime_var, y=outcome, palette=palette, ax=ax)
     elif plot_type == "box":
-        sns.boxplot(data=plot_data, x=regime_var, y=outcome, palette=config.REGIME_COLORS, ax=ax)
+        sns.boxplot(data=plot_data, x=regime_var, y=outcome, palette=palette, ax=ax)
     else:
         raise ValueError(f"Unknown plot_type: {plot_type}")
 
